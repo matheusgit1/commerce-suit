@@ -33,12 +33,12 @@ export const Login: React.FC<props> = ({}) => {
   const onSubmit = async (event: any) => {
     event.preventDefault()
     try{
-      const {data, status} = await AuthContext.login({email: email, password: password})
-      
-      AuthContext.createUser(data)
+      const response = await AuthContext.login({email: email, password: password})
+      console.log(response)
+      AuthContext.createUser(response.data)
       toast.success("Bem vindo!")
       navigate(paths.home)
-      
+      return     
     }catch(error: any){
       if(error.response.data.erro){
         toast.error(error.response.data.erro)

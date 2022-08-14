@@ -33,9 +33,10 @@ export const ResetPassword: React.FC<props> = ({}) => {
   const onSubmit = async (event: any) => {
     event.preventDefault()
     try{
-      const {data} = await AuthContext.resetPassword({email: email})
-      toast.success(data.mensagem)
-      console.log(data)
+      const response = await AuthContext.resetPassword({email: email})
+      toast.success(response.data.mensagem)
+      console.log(response.data)
+      return;
     }catch(error: any){
       if(error.response.data.erro){
         toast.error(error.response.data.erro)

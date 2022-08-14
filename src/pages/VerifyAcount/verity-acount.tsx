@@ -33,9 +33,10 @@ export const VerifyAcount: React.FC<props> = ({}) => {
   const onSubmit = async (event: any) => {
     event.preventDefault()
     try{
-      const {data, status} = await AuthContext.verifyAcount({email, verifyCode})
-      toast.success(data.mensagem)
+      const response = await AuthContext.verifyAcount({email, verifyCode})
+      toast.success(response.data.mensagem)
       navigate(paths.login, {state:{email: email}})
+      return;
     }catch(error: any){
       if(error.response.data.erro){
         toast.error(error.response.data.erro)
@@ -49,8 +50,8 @@ export const VerifyAcount: React.FC<props> = ({}) => {
   const resentVerifyCode = async () => {
     if(email.match(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)){
       try{
-        const {data, status} = await AuthContext.resentVerifyCode({email})
-        toast.success(data.mensagem)
+        const response = await AuthContext.resentVerifyCode({email})
+        toast.success(response.data.mensagem)
         return
       }catch(error: any){
         if(error.response.data.erro){

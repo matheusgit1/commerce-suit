@@ -31,10 +31,23 @@ export type AuthContextProvidersProps = {
 export const AuthContext = React.createContext({} as AuthContextType );
 
 export function AuthContextProvider(props: AuthContextProvidersProps){
-
+  const USER_IN_LOCAL_STORAGE = "commerce-suit-user"
   const [user, setUser] = React.useState<user | undefined>();
 
+  React.useEffect(()=>{
+    const initialize = () => {
+      const lv_user = localStorage.getItem(USER_IN_LOCAL_STORAGE)
+      if(lv_user){
+        const lv_user_parsed = JSON.parse(lv_user)
+        setUser(lv_user_parsed)
+      }
+    }
+    initialize()
+    console.log("user: ",  user)
+  },[])
+
   const createUser = (data: user) => {
+    localStorage.setItem(USER_IN_LOCAL_STORAGE, JSON.stringify(data))
     setUser(data)
   }
 
