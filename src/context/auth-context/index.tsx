@@ -43,7 +43,6 @@ export function AuthContextProvider(props: AuthContextProvidersProps){
       }
     }
     initialize()
-    console.log("user: ",  user)
   },[])
 
   const createUser = (data: user) => {
