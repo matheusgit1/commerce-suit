@@ -13,7 +13,7 @@ interface props {}
 export const Login: React.FC<props> = ({}) => {
 
   const AuthContext = useAuthContext()
-  const authApi = new AuthApi()
+  
   const navigate = useNavigate()
   const location = useLocation()
 
@@ -33,8 +33,8 @@ export const Login: React.FC<props> = ({}) => {
   const onSubmit = async (event: any) => {
     event.preventDefault()
     try{
-      const {data, status} = await authApi.login({email: email, password: password})
-
+      const {data, status} = await AuthContext.login({email: email, password: password})
+      
       AuthContext.createUser(data)
       toast.success("Bem vindo!")
       navigate(paths.home)
@@ -52,7 +52,7 @@ export const Login: React.FC<props> = ({}) => {
   }
 
   //@ts-ignore
-  const [email, setEmail] = React.useState<string>(location.state.email || '')
+  const [email, setEmail] = React.useState<string>(location.state?.email || '')
   const [password, setPassword] = React.useState<string>('')
 
   return(

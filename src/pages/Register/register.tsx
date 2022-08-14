@@ -11,9 +11,7 @@ import { toast } from 'react-toastify';
 interface props {}
 
 export const Register: React.FC<props> = ({}) => {
-
   const AuthContext = useAuthContext()
-  const authApi = new AuthApi()
   const navigate = useNavigate()
 
   const {
@@ -35,7 +33,7 @@ export const Register: React.FC<props> = ({}) => {
       if(password !== password){
         toast.error("Senhas devem combinar")
       }
-      const {data, status} = await authApi.register({email, password, confirmPassword, name, document, phone})
+      const {data, status} = await AuthContext.register({email, password, confirmPassword, name, document, phone})
       toast.success(data.mensagem)
       navigate(paths.verifyAcount, {state:{email: email}})
       console.log(data)

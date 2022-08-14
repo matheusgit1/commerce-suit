@@ -3,10 +3,17 @@ import {Container, Title} from './reset-password.styles'
 import { Form } from '../../components'
 import { useNavigate } from 'react-router-dom'
 import {paths} from '../../mocks/paths'
+import { useAuthContext } from '../../context'
+import {  toast } from 'react-toastify';
+import {useLocation, } from 'react-router-dom';
+
 interface props {}
 
 export const ResetPassword: React.FC<props> = ({}) => {
   const navigate = useNavigate()
+  const AuthContext = useAuthContext()
+  
+  const location = useLocation()
 
   const {
     FormWrapper,
@@ -21,13 +28,26 @@ export const ResetPassword: React.FC<props> = ({}) => {
     FormFieldLabel
   } = Form
 
-  const onSubmit = (event: any) => {
+  const [email, setEmail] = React.useState<string>('')
+
+  const onSubmit = async (event: any) => {
     event.preventDefault()
+    try{
+      const {data} = await AuthContext.resetPassword({email: email})
+      toast.success(data.mensagem)
+      console.log(data)
+    }catch(error: any){
+      if(error.response.data.erro){
+        toast.error(error.response.data.erro)
+        return
+      }
+      toast.error("Erro interno")
+      return
+    }
+    
     console.log(email)
     return;
   }
-
-  const [email, setEmail] = React.useState<string>('')
   // const [password, setPassword] = React.useState<string>('')
 
   return(

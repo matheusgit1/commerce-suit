@@ -15,7 +15,6 @@ export const VerifyAcount: React.FC<props> = ({}) => {
 
   const location = useLocation()
   const AuthContext = useAuthContext()
-  const authApi = new AuthApi()
   const navigate = useNavigate()
 
   const {
@@ -34,7 +33,7 @@ export const VerifyAcount: React.FC<props> = ({}) => {
   const onSubmit = async (event: any) => {
     event.preventDefault()
     try{
-      const {data, status} = await authApi.verifyAcount({email, verifyCode})
+      const {data, status} = await AuthContext.verifyAcount({email, verifyCode})
       toast.success(data.mensagem)
       navigate(paths.login, {state:{email: email}})
     }catch(error: any){
@@ -50,7 +49,7 @@ export const VerifyAcount: React.FC<props> = ({}) => {
   const resentVerifyCode = async () => {
     if(email.match(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)){
       try{
-        const {data, status} = await authApi.resentVerifyCode({email})
+        const {data, status} = await AuthContext.resentVerifyCode({email})
         toast.success(data.mensagem)
         return
       }catch(error: any){

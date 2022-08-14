@@ -1,9 +1,20 @@
 import React from 'react'
 import {Container, Title} from './change-password.styles'
 import { Form } from '../../components'
+import { useNavigate } from 'react-router-dom'
+import {paths} from '../../mocks/paths'
+import { useAuthContext } from '../../context'
+import {  toast } from 'react-toastify';
+import {useLocation, useParams} from 'react-router-dom';
+
 interface props {}
 
 export const ChangePasswordWithoutLogin: React.FC<props> = ({}) => {
+
+  const AuthContext = useAuthContext()
+  const navigate = useNavigate()
+  const location = useLocation()
+  const params = useParams()
 
   const {
     FormWrapper,
@@ -18,11 +29,24 @@ export const ChangePasswordWithoutLogin: React.FC<props> = ({}) => {
     FormFieldLabel
   } = Form
 
-  const onSubmit = (event: any) => {
+  const onSubmit = async (event: any) => {
     event.preventDefault()
-    console.log(event)
-    console.log(email, password)
-    return;
+
+    try{
+      //@ts-ignore
+      const {data} = await AuthContext.changePasswordWithoutLogin({email: email, password: password, confirmPassword: confirmPassword, token: params.token})
+      toast.success(data.mensagem)
+      navigate(paths.login)
+      console.log(data)
+      return;
+    }catch(error: any){
+      if(error.response.data.erro){
+        toast.error(error.response.data.erro)
+        return
+      }
+      toast.error("Erro interno")
+      return
+    }
   }
 
   const [email, setEmail] = React.useState<string>('')
@@ -56,11 +80,11 @@ export const ChangePasswordWithoutLogin: React.FC<props> = ({}) => {
               </FormFieldset>
 
               <FormFieldset>
-                <FormButton type="submit">Fazer login</FormButton>
+                <FormButton type="submit">alterar senha</FormButton>
               </FormFieldset>
 
               <FormFieldset>
-                <FormLink>não possui uma conta? crie uma</FormLink>
+                <FormLink onClick={()=>navigate(paths.newAcount)}>não possui uma conta? crie uma</FormLink>
               </FormFieldset>
             </FormBody>
           </FormWrapper>

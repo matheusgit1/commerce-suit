@@ -24,6 +24,17 @@ export interface IResentVerifyCode{
   email: string
 }
 
+export interface IResetPassword{
+  email: string
+}
+
+export interface IResetPasswordWithoutLogin{
+  email: string
+  token: string
+  password: string
+  confirmPassword: string
+}
+
 export class AuthApi {
     public httpClient: HttpClient
 
@@ -48,6 +59,17 @@ export class AuthApi {
 
     public async resentVerifyCode(body: IResentVerifyCode, headers?:AxiosRequestHeaders){
       const response = await this.httpClient.execute.post('/users/validate/resent-verify-code', body, headers || {})
+      return response
+    }
+
+    public async resetPassword (body: IResetPassword, headers?:AxiosRequestHeaders){
+      const response = await this.httpClient.execute.put('/users/resete-password', body, headers || {})
+      return response
+    }
+
+    public async changePasswordWithoutLogin(body: IResetPasswordWithoutLogin, headers?:AxiosRequestHeaders){
+      const {token,...rest} = body
+      const response = await this.httpClient.execute.put(`/users/resete-password/${body.token}`,{email: body.email, password: body.password, confirmPassword: body.confirmPassword }, headers  || {})
       return response
     }
 }
