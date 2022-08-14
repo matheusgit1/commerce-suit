@@ -1,4 +1,6 @@
 import React from 'react';
+import { AuthApi , ILogin, IRegister, IVerifyAcountBody, IResentVerifyCode, IResetPassword, IResetPasswordWithoutLogin} from '../../services'
+import { AxiosRequestHeaders, AxiosPromise } from 'axios'
 
 export type user = {
   id: string
@@ -14,6 +16,12 @@ export type user = {
 export type AuthContextType = {
   user: user | undefined,
   createUser: (data: user) => void
+  login: (body: ILogin, headers?:AxiosRequestHeaders) => AxiosPromise
+  register: (body: IRegister, headers?:AxiosRequestHeaders) => AxiosPromise
+  verifyAcount: (body: IVerifyAcountBody, headers?:AxiosRequestHeaders) => AxiosPromise
+  resentVerifyCode: (body: IResentVerifyCode, headers?:AxiosRequestHeaders) => AxiosPromise
+  resetPassword: (body: IResetPassword, headers?:AxiosRequestHeaders) => AxiosPromise
+  changePasswordWithoutLogin: (body: IResetPasswordWithoutLogin, headers?:AxiosRequestHeaders) => AxiosPromise
 }
 
 export type AuthContextProvidersProps = {
@@ -29,14 +37,46 @@ export function AuthContextProvider(props: AuthContextProvidersProps){
   const createUser = (data: user) => {
     setUser(data)
   }
-    
+
+  const authApi = new AuthApi()
+
+ const login = async (body: ILogin, headers?:AxiosRequestHeaders) => {
+    const response = await authApi.login(body, headers || {})
+    return response
+  }
+
+ const register = async (body: IRegister, headers?:AxiosRequestHeaders)=>{
+    const response = await authApi.register(body, headers || {})
+    return response
+  }
+
+ const verifyAcount = async (body: IVerifyAcountBody, headers?:AxiosRequestHeaders) =>{
+    const response = await authApi.verifyAcount(body, headers || {})
+    return response
+  }
+
+  const resentVerifyCode = async (body: IResentVerifyCode, headers?:AxiosRequestHeaders) =>{
+    const response = await authApi.resentVerifyCode(body, headers || {})
+    return response
+  }
+  
+  const  resetPassword = async (body: IResetPassword, headers?:AxiosRequestHeaders) => {
+    const response = await authApi.resetPassword(body, headers || {})
+    return response
+  }
+
+  const  changePasswordWithoutLogin = async (body: IResetPasswordWithoutLogin, headers?:AxiosRequestHeaders) => {
+    const response = await authApi.changePasswordWithoutLogin(body, headers || {})
+    return response
+  }
+
   React.useEffect(()=>{
     //do something
   },[]);
 
 
   return(
-    <AuthContext.Provider value={{user, createUser}}>
+    <AuthContext.Provider value={{user, createUser, login, register, verifyAcount, resentVerifyCode, resetPassword, changePasswordWithoutLogin}}>
       {props.children}
     </AuthContext.Provider>
   );
