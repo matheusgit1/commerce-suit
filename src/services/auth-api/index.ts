@@ -20,6 +20,10 @@ export interface IVerifyAcountBody {
   verifyCode: string
 }
 
+export interface IResentVerifyCode{
+  email: string
+}
+
 export class AuthApi {
     public httpClient: HttpClient
 
@@ -39,6 +43,11 @@ export class AuthApi {
 
     public async verifyAcount(body: IVerifyAcountBody, headers?:AxiosRequestHeaders){
       const response = await this.httpClient.execute.post('/users/validate', body, headers || {})
+      return response
+    }
+
+    public async resentVerifyCode(body: IResentVerifyCode, headers?:AxiosRequestHeaders){
+      const response = await this.httpClient.execute.post('/users/validate/resent-verify-code', body, headers || {})
       return response
     }
 }

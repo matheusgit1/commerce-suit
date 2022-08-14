@@ -47,8 +47,27 @@ export const VerifyAcount: React.FC<props> = ({}) => {
     }
   }
 
+  const resentVerifyCode = async () => {
+    if(email.match(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)){
+      try{
+        const {data, status} = await authApi.resentVerifyCode({email})
+        toast.success(data.mensagem)
+        return
+      }catch(error: any){
+        if(error.response.data.erro){
+          toast.error(error.response.data.erro)
+          return
+        }
+        toast.error("Erro interno")
+        return
+      }
+    }
+    toast.error("Email inválido")
+    return
+  }
+
   //@ts-ignore
-  const [email, setEmail] = React.useState<string>(location.state.email || '')
+  const [email, setEmail] = React.useState<string>(location.state?.email || '')
   const [verifyCode, setVeirfyCode] = React.useState<string>('')
 
   return(
@@ -80,7 +99,7 @@ export const VerifyAcount: React.FC<props> = ({}) => {
               <FormFieldset>
                 <div style={{display: "flex", flexDirection: "column", alignItems: "center"}}>
                   <FormLink onClick={()=>navigate(paths.login)}>ou faça login</FormLink>
-                  <FormLink style={{marginTop: 20}}>reenviar código</FormLink>
+                  <FormLink onClick={()=>resentVerifyCode()} style={{marginTop: 20}}>reenviar código</FormLink>
                 </div>
                
               </FormFieldset>
