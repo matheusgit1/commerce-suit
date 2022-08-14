@@ -6,13 +6,17 @@ import {paths} from '../../mocks/paths'
 import { AuthApi } from '../../services/auth-api'
 import { useAuthContext } from '../../context'
 import {  toast } from 'react-toastify';
+import {useLocation} from 'react-router-dom';
 
 interface props {}
 
 export const Login: React.FC<props> = ({}) => {
+
   const AuthContext = useAuthContext()
   const authApi = new AuthApi()
   const navigate = useNavigate()
+  const location = useLocation()
+
   const {
     FormWrapper,
     FormHeader,
@@ -36,14 +40,19 @@ export const Login: React.FC<props> = ({}) => {
       navigate(paths.home)
       
     }catch(error: any){
-      toast.error("E-mail ou senha inválido!")
-      console.log(error)
+      if(error.response.data.erro){
+        toast.error(error.response.data.erro)
+        return
+      }
+      toast.error("Erro interno")
+      return
     }
     
     return;
   }
 
-  const [email, setEmail] = React.useState<string>('')
+  //@ts-ignore
+  const [email, setEmail] = React.useState<string>(location.state.email || '')
   const [password, setPassword] = React.useState<string>('')
 
   return(
@@ -59,7 +68,7 @@ export const Login: React.FC<props> = ({}) => {
             <FormBody onSubmit={onSubmit}>
               <FormFieldset>
                 <FormFieldLabel>E-mail</FormFieldLabel>
-                <FormInput  placeholder="E-mail" type="email" required onChange={(e)=>setEmail(e.target.value)}/>
+                <FormInput defaultValue={email}  placeholder="E-mail" type="email" required onChange={(e)=>setEmail(e.target.value)}/>
               </FormFieldset>
 
               <FormFieldset>

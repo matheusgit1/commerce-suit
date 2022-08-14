@@ -4,14 +4,20 @@ import { Form } from '../../components'
 import { useNavigate } from 'react-router-dom'
 import {paths} from '../../mocks/paths'
 import {useLocation} from 'react-router-dom';
+import { AuthApi } from '../../services/auth-api'
+import { useAuthContext } from '../../context'
+import {  toast } from 'react-toastify';
 
 
 interface props {}
 
 export const VerifyAcount: React.FC<props> = ({}) => {
-  const location = useLocation()
 
+  const location = useLocation()
+  const AuthContext = useAuthContext()
+  const authApi = new AuthApi()
   const navigate = useNavigate()
+
   const {
     FormWrapper,
     FormHeader,
@@ -25,10 +31,20 @@ export const VerifyAcount: React.FC<props> = ({}) => {
     FormFieldLabel
   } = Form
 
-  const onSubmit = (event: any) => {
+  const onSubmit = async (event: any) => {
     event.preventDefault()
-    console.log(email, verifyCode)
-    return;
+    try{
+      const {data, status} = await authApi.verifyAcount({email, verifyCode})
+      toast.success(data.mensagem)
+      navigate(paths.login, {state:{email: email}})
+    }catch(error: any){
+      if(error.response.data.erro){
+        toast.error(error.response.data.erro)
+        return
+      }
+      toast.error("Erro interno")
+      return
+    }
   }
 
   //@ts-ignore
@@ -37,6 +53,7 @@ export const VerifyAcount: React.FC<props> = ({}) => {
 
   return(
     <React.Fragment>
+
       <Container>
         <React.Fragment>
           {/* <Title>COMMERCE-SUIT</Title> */}

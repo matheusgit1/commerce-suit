@@ -15,6 +15,11 @@ export interface IRegister {
   confirmPassword: string
 }
 
+export interface IVerifyAcountBody {
+  email: string,
+  verifyCode: string
+}
+
 export class AuthApi {
     public httpClient: HttpClient
 
@@ -29,6 +34,11 @@ export class AuthApi {
 
     public async register(body: IRegister, headers?:AxiosRequestHeaders){
       const response = await this.httpClient.execute.post('/users/create', body, headers || {})
+      return response
+    }
+
+    public async verifyAcount(body: IVerifyAcountBody, headers?:AxiosRequestHeaders){
+      const response = await this.httpClient.execute.post('/users/validate', body, headers || {})
       return response
     }
 }
