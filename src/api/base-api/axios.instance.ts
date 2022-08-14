@@ -8,9 +8,9 @@ export class HttpClient {
   public baseUrl: string = ''
   public timeout: number = 7000
   
-  constructor (baseUrl: IBasePath, timeout?: number){
-    this.baseUrl = baseUrl.basePath
-    this.timeout = timeout || this.defaultTimeout
+  constructor (basepath: IBasePath){
+    this.baseUrl = basepath.basePath
+    this.timeout = basepath.timeout
 
     this.execute = axios.create({
       baseURL: this.baseUrl,

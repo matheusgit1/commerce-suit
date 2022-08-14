@@ -1,5 +1,6 @@
 export interface IBasePath {
   basePath: string
+  timeout: number
 }
 
 export class BasePaths {
@@ -9,6 +10,6 @@ export class BasePaths {
   }
 
   public getBaseurlOfAuthApi(): IBasePath{
-    return { basePath: 'http://127.0.0.1:3000/v1/auth' }
+    return { basePath: 'http://127.0.0.1:3000/v1/auth', timeout: 15000 }
   }
 }
