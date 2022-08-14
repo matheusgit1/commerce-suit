@@ -6,6 +6,15 @@ export interface ILogin {
   password: string
 }
 
+export interface IRegister {
+  email: string
+  name: string
+  document: string
+  phone: string
+  password: string
+  confirmPassword: string
+}
+
 export class AuthApi {
     public httpClient: HttpClient
 
@@ -15,6 +24,11 @@ export class AuthApi {
 
     public async login(body: ILogin, headers?:AxiosRequestHeaders){
       const response = await this.httpClient.execute.post('/users/login', body, headers || {})
+      return response
+    }
+
+    public async register(body: IRegister, headers?:AxiosRequestHeaders){
+      const response = await this.httpClient.execute.post('/users/create', body, headers || {})
       return response
     }
 }

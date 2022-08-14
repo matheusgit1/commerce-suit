@@ -3,9 +3,14 @@ import {Container, Title} from './verify-acount.styles'
 import { Form } from '../../components'
 import { useNavigate } from 'react-router-dom'
 import {paths} from '../../mocks/paths'
+import {useLocation} from 'react-router-dom';
+
+
 interface props {}
 
 export const VerifyAcount: React.FC<props> = ({}) => {
+  const location = useLocation()
+
   const navigate = useNavigate()
   const {
     FormWrapper,
@@ -26,7 +31,8 @@ export const VerifyAcount: React.FC<props> = ({}) => {
     return;
   }
 
-  const [email, setEmail] = React.useState<string>('')
+  //@ts-ignore
+  const [email, setEmail] = React.useState<string>(location.state.email || '')
   const [verifyCode, setVeirfyCode] = React.useState<string>('')
 
   return(
@@ -42,7 +48,7 @@ export const VerifyAcount: React.FC<props> = ({}) => {
             <FormBody onSubmit={onSubmit}>
               <FormFieldset>
                 <FormFieldLabel>E-mail</FormFieldLabel>
-                <FormInput  placeholder="E-mail" type="email" required onChange={(e)=>setEmail(e.target.value)}/>
+                <FormInput defaultValue={email}  placeholder="E-mail" type="email" required onChange={(e)=>setEmail(e.target.value)}/>
               </FormFieldset>
 
               <FormFieldset>

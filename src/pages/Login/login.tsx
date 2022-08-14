@@ -11,6 +11,7 @@ interface props {}
 
 export const Login: React.FC<props> = ({}) => {
   const AuthContext = useAuthContext()
+  const authApi = new AuthApi()
   const navigate = useNavigate()
   const {
     FormWrapper,
@@ -24,8 +25,6 @@ export const Login: React.FC<props> = ({}) => {
     FormLink,
     FormFieldLabel
   } = Form
-
-  const authApi = new AuthApi()
 
   const onSubmit = async (event: any) => {
     event.preventDefault()

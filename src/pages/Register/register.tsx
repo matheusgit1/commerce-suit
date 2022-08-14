@@ -3,10 +3,19 @@ import {Container, Title} from './register.styles'
 import { Form } from '../../components'
 import {paths} from '../../mocks/paths'
 import {useNavigate} from 'react-router-dom'
+import { AuthApi } from '../../services/auth-api'
+import { useAuthContext } from '../../context'
+import { toast } from 'react-toastify';
+
+
 interface props {}
 
 export const Register: React.FC<props> = ({}) => {
+
+  const AuthContext = useAuthContext()
+  const authApi = new AuthApi()
   const navigate = useNavigate()
+
   const {
     FormWrapper,
     FormHeader,
@@ -20,10 +29,26 @@ export const Register: React.FC<props> = ({}) => {
     FormFieldLabel
   } = Form
 
-  const onSubmit = (event: any) => {
+  const onSubmit = async (event: any) => {
     event.preventDefault()
-    console.log(email, password, confirmPassword, name, document, phone)
-    return;
+    try{
+      if(password !== password){
+        toast.error("Senhas devem combinar")
+      }
+      const {data, status} = await authApi.register({email, password, confirmPassword, name, document, phone})
+      toast.success(data.mensagem)
+      navigate(paths.verifyAcount, {state:{email: email}})
+      console.log(data)
+      return;
+    }catch(error: any){
+      if(error.response.data.erro){
+        toast.error(error.response.data.erro)
+        return
+      }
+      toast.error("Erro interno")
+      return
+    }
+   
   }
 
   const [email, setEmail] = React.useState<string>('')
