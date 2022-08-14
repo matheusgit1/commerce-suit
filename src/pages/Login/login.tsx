@@ -3,9 +3,14 @@ import {Container, Title} from './login.styles'
 import { Form } from '../../components'
 import { useNavigate } from 'react-router-dom'
 import {paths} from '../../mocks/paths'
+import { AuthApi } from '../../services/auth-api'
+import { useAuthContext } from '../../context'
+import {  toast } from 'react-toastify';
+
 interface props {}
 
 export const Login: React.FC<props> = ({}) => {
+  const AuthContext = useAuthContext()
   const navigate = useNavigate()
   const {
     FormWrapper,
@@ -20,9 +25,22 @@ export const Login: React.FC<props> = ({}) => {
     FormFieldLabel
   } = Form
 
-  const onSubmit = (event: any) => {
+  const authApi = new AuthApi()
+
+  const onSubmit = async (event: any) => {
     event.preventDefault()
-    console.log(email, password)
+    try{
+      const {data, status} = await authApi.login({email: email, password: password})
+
+      AuthContext.createUser(data)
+      toast.success("Bem vindo!")
+      navigate(paths.home)
+      
+    }catch(error: any){
+      toast.error("E-mail ou senha inválido!")
+      console.log(error)
+    }
+    
     return;
   }
 
