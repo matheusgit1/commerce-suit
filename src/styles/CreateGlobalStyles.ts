@@ -28,9 +28,6 @@ export default createGlobalStyle`
   }
 
   @media (max-width: 768px) {
-    html {
-      font-size: 55%;
-    }
 
     h1, h2 {
       font-size: 4.2rem!important;
@@ -38,9 +35,6 @@ export default createGlobalStyle`
   }
 
   @media (max-width: 500px) {
-    html {
-      font-size: 50%;
-    }
 
     h1, h2 {
       font-size: 3.2rem!important;
@@ -48,9 +42,6 @@ export default createGlobalStyle`
   }
 
   @media (max-width: 430px) {
-    html {
-      font-size: 50%;
-    }
 
     h1, h2 {
       font-size: 3rem!important;
@@ -58,9 +49,7 @@ export default createGlobalStyle`
   }
 
   @media (max-width: 380px) {
-    html {
-      font-size: 45%;
-    }
+
 
     h1, h2 {
       font-size: 2.5rem!important;
