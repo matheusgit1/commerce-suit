@@ -7,7 +7,7 @@ import {
   CardProductDiscount
 } from './product-card.styles'
 import { HiTag } from 'react-icons/hi'
-
+import { useProductContext } from '../../context'
 interface IProductFeatures {
   title: string
   body: {
@@ -37,11 +37,17 @@ interface props{
 
 
 export const ProductCards: React.FC<props> = ({data}) => {
-
+  const productContext = useProductContext()
   React.useEffect(()=>{
     // console.log("use: ", data)
     //do something
   },[])
+
+  const addToWishList = async () => {
+     //to-do implementes wish to wish list
+     const response = await productContext.addToWishList(data.id)
+     return
+  }
 
   return(
     <React.Fragment>
@@ -50,7 +56,7 @@ export const ProductCards: React.FC<props> = ({data}) => {
         <CardProductPrice> R$ {data.price} </CardProductPrice>
         <CardProductDiscount> {data.discount && +data.discount != 0 ? `-R$${data.discount} OFF` : ""}</CardProductDiscount>
         <CardProductButtomContainer>
-          <CardProductButtom> Lista de desejos <HiTag color="#fff" size={25}/> </CardProductButtom>
+          <CardProductButtom onClick={()=>addToWishList()}> Lista de desejos <HiTag color="#fff" size={25}/> </CardProductButtom>
         </CardProductButtomContainer>
       </CardWrapper>
     </React.Fragment>
