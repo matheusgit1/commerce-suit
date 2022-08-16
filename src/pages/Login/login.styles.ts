@@ -9,8 +9,8 @@ export const Container = styled.div`
   align-items: center;
   justify-content: center;
   background-image: url(${img});
+  background-size: 15px 15px;
   background-color: #e0b831;
-  background-size: 100% 100%;
 `
 
 export const Title = styled.h3`

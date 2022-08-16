@@ -1,26 +1,49 @@
 import React from "react";
 import { useWindowDimensions } from '../../hooks/useWindownDimension'
-import { CarouselWrapper, CarouselButton, Container } from './home.styles'
-import { Carousel } from '../../components'
-import banner from "../../assets/banners/banner-1.jpg"
+import { CarouselWrapper, CarouselButton, Container, FlexRow, CategoryTitle } from './home.styles'
+import { ProductCards } from '../../components'
+import { useProductContext } from '../../context'
+import Carousel from 'nuka-carousel'
+
 
 interface props {}
 
+
+
 export const Home: React.FC<props> = ({}) => {
-  const {width} = useWindowDimensions()
-  const mockImages = [
-    'https://d8hp1nglju2zj.cloudfront.net/dry-site/cartola/main-banner-cartola.jpg',
-    'https://images.unsplash.com/photo-1523800378286-dae1f0dae656?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=776&q=80'
-  ]
+
+  const productContext = useProductContext()
+
+  const [listProduct, setListProduct] = React.useState<Array<any>>()
+
+  React.useEffect(()=>{
+    const initialize = async () => {
+      const {data} = await productContext.getListProductWithLimit()
+      setListProduct(data)
+      return
+    }
+
+    initialize()
+  },[])
   
   return(
     <React.Fragment>
-
-      <CarouselWrapper>
+      <Container>
+        <CategoryTitle> Ultimos anúncios </CategoryTitle>
+        <FlexRow>
+          {
+            listProduct?.map((values,index)=>(
+              <ProductCards key={index} data={values}/>
+            ))
+          }
+          
+        </FlexRow>
+        
+      </Container>
+      {/* <CarouselWrapper>
         <Carousel imagesUrls={mockImages} />
         <CarouselButton>Eu quero!</CarouselButton>
-      </CarouselWrapper>
-
+      </CarouselWrapper> */}
     </React.Fragment>
   )
 }

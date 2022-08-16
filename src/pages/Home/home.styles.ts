@@ -3,16 +3,14 @@ import styled, { css } from "styled-components";
 import img from "../../assets/background-global.jpg"
 
 export const Container = styled.div`
+  padding: 20px 20px;
   display: flex;
-  height: 100%;
+  height: auto;
   flex-direction: column;
   flex: 1;
   align-items: center;
-  justify-content: center;
-  background-image: url(${img});
-  background-color: #e0b831;
-  background-size: 100% 100%;
-  width: 100%;
+  max-width: 100%;
+  background-color: transparent;
 `
 
 export const Title = styled.h3`
@@ -61,4 +59,25 @@ export const CarouselButton = styled.button`
     background-color: #fffdee;
     transition: 300ms;
   }
+`
+
+export const FlexRow = styled.div`
+  justify-content: space-around;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+`
+
+export const CategoryTitle = styled.h2`
+  font-size: 3rem;
+  font-weight: 600;
+  opacity: 0.6;
+  display: flex;
+  flex: 1;
+  text-align: center;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin-top: 30px;
+  margin-bottom: 30px;
 `
