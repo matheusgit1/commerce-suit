@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
-import { AuthContextProvider } from './context'
+import { AuthContextProvider, ProductContextProvider } from './context'
+
 import { Routing } from './routes'
 import CreateGlobalStyle from './styles/CreateGlobalStyles'
 
@@ -8,10 +9,12 @@ function App() {
 
   return (
     <AuthContextProvider>
-      <>
-        <Routing/>
-        <CreateGlobalStyle/>
-      </>
+      <ProductContextProvider>
+        <>
+          <Routing/>
+          <CreateGlobalStyle/>
+        </>
+      </ProductContextProvider>
     </AuthContextProvider>
       
   )
