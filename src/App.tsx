@@ -1,22 +1,21 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { AuthContextProvider, ProductContextProvider } from './context'
-
 import { Routing } from './routes'
-import CreateGlobalStyle from './styles/CreateGlobalStyles'
+import 'antd/dist/antd.css';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
     <AuthContextProvider>
       <ProductContextProvider>
-        <>
-          <Routing/>
-          <CreateGlobalStyle/>
-        </>
+        <React.Fragment>
+          <Routing />
+        </React.Fragment>
       </ProductContextProvider>
     </AuthContextProvider>
-      
+
   )
 }
 
