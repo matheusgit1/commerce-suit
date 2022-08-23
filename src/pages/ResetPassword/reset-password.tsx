@@ -1,18 +1,18 @@
 import React from 'react'
-import {Container, Title} from './reset-password.styles'
+import { Container, Title } from './reset-password.styles'
 import { Form } from '../../components'
 import { useNavigate } from 'react-router-dom'
-import {paths} from '../../mocks/paths'
+import { paths } from '../../mocks/paths'
 import { useAuthContext } from '../../context'
-import {  toast } from 'react-toastify';
-import {useLocation, } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { useLocation, } from 'react-router-dom';
 
-interface props {}
+interface props { }
 
-export const ResetPassword: React.FC<props> = ({}) => {
+export const ResetPassword: React.FC<props> = ({ }) => {
   const navigate = useNavigate()
   const AuthContext = useAuthContext()
-  
+
   const location = useLocation()
 
   const {
@@ -32,26 +32,26 @@ export const ResetPassword: React.FC<props> = ({}) => {
 
   const onSubmit = async (event: any) => {
     event.preventDefault()
-    try{
-      const response = await AuthContext.resetPassword({email: email})
+    try {
+      const response = await AuthContext.resetPassword({ email: email })
       toast.success(response.data.mensagem)
-      console.log(response.data)
+      // console.log(response.data)
       return;
-    }catch(error: any){
-      if(error.response.data.erro){
+    } catch (error: any) {
+      if (error.response.data.erro) {
         toast.error(error.response.data.erro)
         return
       }
       toast.error("Erro interno")
       return
     }
-    
-    console.log(email)
+
+    // console.log(email)
     return;
   }
   // const [password, setPassword] = React.useState<string>('')
 
-  return(
+  return (
     <React.Fragment>
       <Container>
         <React.Fragment>
@@ -64,7 +64,7 @@ export const ResetPassword: React.FC<props> = ({}) => {
             <FormBody onSubmit={onSubmit}>
               <FormFieldset>
                 <FormFieldLabel>E-mail</FormFieldLabel>
-                <FormInput  placeholder="E-mail" type="email" required onChange={(e)=>setEmail(e.target.value)}/>
+                <FormInput placeholder="E-mail" type="email" required onChange={(e) => setEmail(e.target.value)} />
               </FormFieldset>
 
               {/* <FormFieldset>
@@ -77,7 +77,7 @@ export const ResetPassword: React.FC<props> = ({}) => {
               </FormFieldset>
 
               <FormFieldset>
-                <FormLink onClick={()=>navigate(paths.login)}>ou faça login</FormLink>
+                <FormLink onClick={() => navigate(paths.login)}>ou faça login</FormLink>
               </FormFieldset>
             </FormBody>
           </FormWrapper>
