@@ -3,7 +3,7 @@ import img from "../../assets/background-global.jpg"
 
 export const Container = styled.div`
   display: flex;
-  height: 100%;
+  height: 100vh;
   flex-direction: column;
   flex: 1;
   align-items: center;

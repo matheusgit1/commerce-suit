@@ -1,15 +1,15 @@
 import React from 'react'
-import {Container, Title} from './change-password.styles'
+import { Container, Title } from './change-password.styles'
 import { Form } from '../../components'
 import { useNavigate } from 'react-router-dom'
-import {paths} from '../../mocks/paths'
+import { paths } from '../../mocks/paths'
 import { useAuthContext } from '../../context'
-import {  toast } from 'react-toastify';
-import {useLocation, useParams} from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { useLocation, useParams } from 'react-router-dom';
 
-interface props {}
+interface props { }
 
-export const ChangePasswordWithoutLogin: React.FC<props> = ({}) => {
+export const ChangePasswordWithoutLogin: React.FC<props> = ({ }) => {
 
   const AuthContext = useAuthContext()
   const navigate = useNavigate()
@@ -32,15 +32,15 @@ export const ChangePasswordWithoutLogin: React.FC<props> = ({}) => {
   const onSubmit = async (event: any) => {
     event.preventDefault()
 
-    try{
+    try {
       //@ts-ignore
-      const {data} = await AuthContext.changePasswordWithoutLogin({email: email, password: password, confirmPassword: confirmPassword, token: params.token})
+      const { data } = await AuthContext.changePasswordWithoutLogin({ email: email, password: password, confirmPassword: confirmPassword, token: params.token })
       toast.success(data.mensagem)
       navigate(paths.login)
-      console.log(data)
+      // console.log(data)
       return;
-    }catch(error: any){
-      if(error.response.data.erro){
+    } catch (error: any) {
+      if (error.response.data.erro) {
         toast.error(error.response.data.erro)
         return
       }
@@ -53,7 +53,7 @@ export const ChangePasswordWithoutLogin: React.FC<props> = ({}) => {
   const [password, setPassword] = React.useState<string>('')
   const [confirmPassword, setConfirmPassword] = React.useState<string>('')
 
-  return(
+  return (
     <React.Fragment>
       <Container>
         <React.Fragment>
@@ -63,20 +63,20 @@ export const ChangePasswordWithoutLogin: React.FC<props> = ({}) => {
               <FormHeading>Troca de senha</FormHeading>
             </FormHeader>
 
-            <FormBody onSubmit={(e)=>onSubmit(e)}>
+            <FormBody onSubmit={(e) => onSubmit(e)}>
               <FormFieldset>
                 <FormFieldLabel>E-mail</FormFieldLabel>
-                <FormInput  placeholder="E-mail" type="email" required onChange={(e)=>setEmail(e.target.value)}/>
+                <FormInput placeholder="E-mail" type="email" required onChange={(e) => setEmail(e.target.value)} />
               </FormFieldset>
 
               <FormFieldset>
                 <FormFieldLabel>Senha</FormFieldLabel>
-                <FormInput placeholder="senha" type="password" required onChange={(e)=>setPassword(e.target.value)} />
+                <FormInput placeholder="senha" type="password" required onChange={(e) => setPassword(e.target.value)} />
               </FormFieldset>
 
               <FormFieldset>
                 <FormFieldLabel>confirmação de senha</FormFieldLabel>
-                <FormInput placeholder="senha" type="password" required onChange={(e)=>setConfirmPassword(e.target.value)} />
+                <FormInput placeholder="senha" type="password" required onChange={(e) => setConfirmPassword(e.target.value)} />
               </FormFieldset>
 
               <FormFieldset>
@@ -84,7 +84,7 @@ export const ChangePasswordWithoutLogin: React.FC<props> = ({}) => {
               </FormFieldset>
 
               <FormFieldset>
-                <FormLink onClick={()=>navigate(paths.newAcount)}>não possui uma conta? crie uma</FormLink>
+                <FormLink onClick={() => navigate(paths.newAcount)}>não possui uma conta? crie uma</FormLink>
               </FormFieldset>
             </FormBody>
           </FormWrapper>
