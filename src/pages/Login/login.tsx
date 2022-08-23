@@ -1,19 +1,19 @@
 import React from 'react'
-import {Container, Title} from './login.styles'
+import { Container, Title } from './login.styles'
 import { Form } from '../../components'
 import { useNavigate } from 'react-router-dom'
-import {paths} from '../../mocks/paths'
+import { paths } from '../../mocks/paths'
 import { AuthApi } from '../../services/auth-api'
 import { useAuthContext } from '../../context'
-import {  toast } from 'react-toastify';
-import {useLocation} from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { useLocation } from 'react-router-dom';
 
-interface props {}
+interface props { }
 
-export const Login: React.FC<props> = ({}) => {
+export const Login: React.FC<props> = ({ }) => {
 
   const AuthContext = useAuthContext()
-  
+
   const navigate = useNavigate()
   const location = useLocation()
 
@@ -32,22 +32,22 @@ export const Login: React.FC<props> = ({}) => {
 
   const onSubmit = async (event: any) => {
     event.preventDefault()
-    try{
-      const response = await AuthContext.login({email: email, password: password})
-      console.log(response)
+    try {
+      const response = await AuthContext.login({ email: email, password: password })
+      // console.log(response)
       AuthContext.createUser(response.data)
       toast.success("Bem vindo!")
       navigate(paths.home)
-      return     
-    }catch(error: any){
-      if(error.response.data.erro){
+      return
+    } catch (error: any) {
+      if (error.response.data.erro) {
         toast.error(error.response.data.erro)
         return
       }
       toast.error("Erro interno")
       return
     }
-    
+
     return;
   }
 
@@ -55,7 +55,7 @@ export const Login: React.FC<props> = ({}) => {
   const [email, setEmail] = React.useState<string>(location.state?.email || '')
   const [password, setPassword] = React.useState<string>('')
 
-  return(
+  return (
     <React.Fragment>
       <Container>
         <React.Fragment>
@@ -68,12 +68,12 @@ export const Login: React.FC<props> = ({}) => {
             <FormBody onSubmit={onSubmit}>
               <FormFieldset>
                 <FormFieldLabel>E-mail</FormFieldLabel>
-                <FormInput defaultValue={email}  placeholder="E-mail" type="email" required onChange={(e)=>setEmail(e.target.value)}/>
+                <FormInput defaultValue={email} placeholder="E-mail" type="email" required onChange={(e) => setEmail(e.target.value)} />
               </FormFieldset>
 
               <FormFieldset>
                 <FormFieldLabel>Senha</FormFieldLabel>
-                <FormInput placeholder="senha" type="password" required onChange={(e)=>setPassword(e.target.value)} />
+                <FormInput placeholder="senha" type="password" required onChange={(e) => setPassword(e.target.value)} />
               </FormFieldset>
 
               <FormFieldset>
@@ -81,10 +81,10 @@ export const Login: React.FC<props> = ({}) => {
               </FormFieldset>
 
               <FormFieldset>
-                <div style={{display: "flex", flexDirection: "column", alignItems: "center"}}>
-                  <FormLink onClick={()=>navigate(paths.newAcount)}>não possui uma conta? crie uma<br/></FormLink>
-                  <FormLink style={{marginTop: 20}} onClick={()=>navigate(paths.resetPassword)}>esqueceu sua senha? recupere-a aqui</FormLink>
-                  <FormLink style={{marginTop: 20}} onClick={()=>navigate(paths.verifyAcount)}>verifique sua conta<br/></FormLink>
+                <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+                  <FormLink onClick={() => navigate(paths.newAcount)}>não possui uma conta? crie uma<br /></FormLink>
+                  <FormLink style={{ marginTop: 20 }} onClick={() => navigate(paths.resetPassword)}>esqueceu sua senha? recupere-a aqui</FormLink>
+                  <FormLink style={{ marginTop: 20 }} onClick={() => navigate(paths.verifyAcount)}>verifique sua conta<br /></FormLink>
                 </div>
               </FormFieldset>
 

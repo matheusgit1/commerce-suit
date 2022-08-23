@@ -3,14 +3,14 @@ import img from "../../assets/background-global.jpg"
 
 export const Container = styled.div`
   display: flex;
-  height: 100%;
+  height: 100vh;
   flex-direction: column;
   flex: 1;
   align-items: center;
   justify-content: center;
   background-image: url(${img});
-  background-size: 100% 100%;
   background-color: #e0b831;
+  background-size: 100% 100%;
 `
 
 export const Title = styled.h3`
