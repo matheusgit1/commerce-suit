@@ -38,7 +38,7 @@ export const Radix = () => {
         !authRoutes.includes(location.pathname) && <Header />
       }
       <Routes>
-        <Route path={paths.home} element={<Home />} />
+        <Route path={paths.home || ""} element={<Home />} />
       </Routes>
       <ToastContainer />
     </React.Fragment>
