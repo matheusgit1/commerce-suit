@@ -1,6 +1,22 @@
 import React from 'react';
-import { AuthApi , ILogin, IRegister, IVerifyAcountBody, IResentVerifyCode, IResetPassword, IResetPasswordWithoutLogin} from '../../services'
+import {
+  AuthApi,
+  ILogin,
+  IRegister,
+  IVerifyAcountBody,
+  IResentVerifyCode,
+  IResetPassword,
+  IResetPasswordWithoutLogin,
+  AdressApi,
+  IAdressFormat,
+  IUpdateAdressFormat,
+  IDeleteAdressFormat,
+  IRegisterAdressFormat
+} from '../../services'
 import { AxiosRequestHeaders, AxiosPromise } from 'axios'
+import { } from 'react-router-dom'
+import { toast } from 'react-toastify'
+
 
 export type user = {
   id: string
@@ -12,83 +28,192 @@ export type user = {
   isVerified: boolean
   access_token: string
 }
-  
+
 export type AuthContextType = {
   user: user | undefined,
+  userAdress: IAdressFormat | undefined
+  userListAdress: IAdressFormat[] | undefined
   createUser: (data: user) => void
-  login: (body: ILogin, headers?:AxiosRequestHeaders) => AxiosPromise
-  register: (body: IRegister, headers?:AxiosRequestHeaders) => AxiosPromise
-  verifyAcount: (body: IVerifyAcountBody, headers?:AxiosRequestHeaders) => AxiosPromise
-  resentVerifyCode: (body: IResentVerifyCode, headers?:AxiosRequestHeaders) => AxiosPromise
-  resetPassword: (body: IResetPassword, headers?:AxiosRequestHeaders) => AxiosPromise
-  changePasswordWithoutLogin: (body: IResetPasswordWithoutLogin, headers?:AxiosRequestHeaders) => AxiosPromise
+  login: (body: ILogin, headers?: AxiosRequestHeaders) => AxiosPromise
+  logout: () => void
+  register: (body: IRegister, headers?: AxiosRequestHeaders) => AxiosPromise
+  verifyAcount: (body: IVerifyAcountBody, headers?: AxiosRequestHeaders) => AxiosPromise
+  resentVerifyCode: (body: IResentVerifyCode, headers?: AxiosRequestHeaders) => AxiosPromise
+  resetPassword: (body: IResetPassword, headers?: AxiosRequestHeaders) => AxiosPromise
+  changePasswordWithoutLogin: (body: IResetPasswordWithoutLogin, headers?: AxiosRequestHeaders) => AxiosPromise
+  createUserAdress: (data: IAdressFormat) => void
+  updateUserAdress: (body: IUpdateAdressFormat, headers?: AxiosRequestHeaders) => AxiosPromise
+  deleteUserAdress: (body: IDeleteAdressFormat, headers?: AxiosRequestHeaders) => AxiosPromise
+  removeAdressFromList: (adressId: string) => void
+  registerANewAdressOfUser: (body: IRegisterAdressFormat, headers?: AxiosRequestHeaders) => AxiosPromise
 }
 
 export type AuthContextProvidersProps = {
   children: React.ReactNode,
 }
-  
-export const AuthContext = React.createContext({} as AuthContextType );
 
-export function AuthContextProvider(props: AuthContextProvidersProps){
+export const AuthContext = React.createContext({} as AuthContextType);
+
+export function AuthContextProvider(props: AuthContextProvidersProps) {
   const USER_IN_LOCAL_STORAGE = "commerce-suit-user"
-  const [user, setUser] = React.useState<user | undefined>();
+  const ADRESS_IN_LOCAL_STORAGE = "commerce-suit-adress"
 
-  React.useEffect(()=>{
-    const initialize = () => {
+  const [user, setUser] = React.useState<user | undefined>(undefined);
+  const [userAdress, setUserAdress] = React.useState<IAdressFormat | undefined>(undefined)
+  const [userListAdress, setUserListAdress] = React.useState<IAdressFormat[]>([])
+
+  const authApi = new AuthApi()
+  const adressApi = new AdressApi()
+
+  React.useEffect(() => {
+    const initialize = async () => {
       const lv_user = localStorage.getItem(USER_IN_LOCAL_STORAGE)
-      if(lv_user){
+      if (lv_user) {
         const lv_user_parsed = JSON.parse(lv_user)
+        console.log("lv_user_parsed: ", lv_user_parsed)
         setUser(lv_user_parsed)
+        console.log(lv_user_parsed)
+        return
       }
     }
     initialize()
-  },[])
+  }, [])
+
+  React.useEffect(() => {
+    const initialize = async () => {
+
+      const lv_adress = localStorage.getItem(ADRESS_IN_LOCAL_STORAGE)
+      if (lv_adress) {
+        const lv_adress_parsed = JSON.parse(lv_adress)
+        setUserAdress(lv_adress_parsed)
+        // console.log(lv_adress_parsed)
+      }
+
+      console.log("user: ", user)
+
+      if (user) {
+        const res = await listUserAdress()
+        console.log("list adress: ", res.data)
+        setUserListAdress(res.data)
+        //@ts-ignore
+        console.log("access_token: ", user?.access_token)
+      }
+
+      return
+    }
+    initialize()
+  }, [user])
+
 
   const createUser = (data: user) => {
     localStorage.setItem(USER_IN_LOCAL_STORAGE, JSON.stringify(data))
     setUser(data)
   }
 
-  const authApi = new AuthApi()
+  const createUserAdress = (data: IAdressFormat) => {
+    localStorage.setItem(ADRESS_IN_LOCAL_STORAGE, JSON.stringify(data))
+    setUserAdress(data)
+    return
+  }
 
- const login = async (body: ILogin, headers?:AxiosRequestHeaders) => {
+  const registerANewAdressOfUser = async (body: IRegisterAdressFormat, headers?: AxiosRequestHeaders) => {
+    const response = await adressApi.registerANewAdressOfUser(body, headers)
+    if (response.status === 200 || response.status === 201) {
+      setUserListAdress(oldArray => [...oldArray, response.data]);
+    }
+    return response
+  }
+
+  const listUserAdress = async () => {
+    const response = await adressApi.listUserAdress(user?.access_token || "")
+    return response
+  }
+
+  const removeAdressFromList = async (adressId: string) => {
+    userListAdress.map((values, index) => {
+      if (values.id === adressId) {
+        setUserListAdress([...userListAdress?.slice(index, 1)])
+        return
+      }
+    })
+  }
+
+  const updateUserAdress = async (body: IUpdateAdressFormat, headers?: AxiosRequestHeaders) => {
+    const response = await adressApi.updateUserAdress(body, headers)
+    return response
+  }
+
+  const deleteUserAdress = async (body: IDeleteAdressFormat, headers?: AxiosRequestHeaders) => {
+    if (userAdress?.id === body.adressId) {
+      localStorage.removeItem(ADRESS_IN_LOCAL_STORAGE)
+    }
+    const response = await adressApi.deleteUserAdress(body, headers)
+    return response
+  }
+
+  const login = async (body: ILogin, headers?: AxiosRequestHeaders) => {
     const response = await authApi.login(body, headers || {})
     return response
   }
 
- const register = async (body: IRegister, headers?:AxiosRequestHeaders)=>{
+  const logout = async () => {
+    localStorage.removeItem(USER_IN_LOCAL_STORAGE)
+    localStorage.removeItem(ADRESS_IN_LOCAL_STORAGE)
+    setUser(undefined)
+    toast.success("LOGOUT")
+    return
+  }
+
+  const register = async (body: IRegister, headers?: AxiosRequestHeaders) => {
     const response = await authApi.register(body, headers || {})
     return response
   }
 
- const verifyAcount = async (body: IVerifyAcountBody, headers?:AxiosRequestHeaders) =>{
+  const verifyAcount = async (body: IVerifyAcountBody, headers?: AxiosRequestHeaders) => {
     const response = await authApi.verifyAcount(body, headers || {})
     return response
   }
 
-  const resentVerifyCode = async (body: IResentVerifyCode, headers?:AxiosRequestHeaders) =>{
+  const resentVerifyCode = async (body: IResentVerifyCode, headers?: AxiosRequestHeaders) => {
     const response = await authApi.resentVerifyCode(body, headers || {})
     return response
   }
-  
-  const  resetPassword = async (body: IResetPassword, headers?:AxiosRequestHeaders) => {
+
+  const resetPassword = async (body: IResetPassword, headers?: AxiosRequestHeaders) => {
     const response = await authApi.resetPassword(body, headers || {})
     return response
   }
 
-  const  changePasswordWithoutLogin = async (body: IResetPasswordWithoutLogin, headers?:AxiosRequestHeaders) => {
+  const changePasswordWithoutLogin = async (body: IResetPasswordWithoutLogin, headers?: AxiosRequestHeaders) => {
     const response = await authApi.changePasswordWithoutLogin(body, headers || {})
     return response
   }
 
-  React.useEffect(()=>{
+  React.useEffect(() => {
     //do something
-  },[]);
+  }, []);
 
 
-  return(
-    <AuthContext.Provider value={{user, createUser, login, register, verifyAcount, resentVerifyCode, resetPassword, changePasswordWithoutLogin}}>
+  return (
+    <AuthContext.Provider value={{
+      user,
+      userAdress,
+      userListAdress,
+      createUser,
+      login,
+      logout,
+      register,
+      verifyAcount,
+      resentVerifyCode,
+      resetPassword,
+      changePasswordWithoutLogin,
+      createUserAdress,
+      updateUserAdress,
+      deleteUserAdress,
+      removeAdressFromList,
+      registerANewAdressOfUser
+    }}
+    >
       {props.children}
     </AuthContext.Provider>
   );
