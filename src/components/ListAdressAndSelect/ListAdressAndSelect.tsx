@@ -118,9 +118,9 @@ export const ListAdressAndSelect: React.FC<props> = ({ }) => {
         ) : (
           authContext.userListAdress?.map((values, index) => (
             <Card
+              style={{ marginTop: 8, boxShadow: values.id === authContext.userAdress?.id ? 'rgba(26, 222, 4, 0.979) 0px 3px 8px' : 'rgba(100, 100, 111, 0.2) 0px 7px 29px 0px' }}
               hoverable
               key={index + values.id}
-              style={{ marginTop: 8 }}
               loading={false}
               actions={[
                 <Col>
@@ -133,7 +133,7 @@ export const ListAdressAndSelect: React.FC<props> = ({ }) => {
                         }}
                         style={{
                           color: authContext.userAdress?.id === values.id ? 'white' : 'blue',
-                          background: authContext.userAdress?.id === values.id ? '#94C100' : 'white'
+                          background: authContext.userAdress?.id === values.id ? '#7cf601' : 'white'
                         }}
                         type="default"
                         icon={<CheckOutlined />}
