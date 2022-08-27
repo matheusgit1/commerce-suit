@@ -11,7 +11,7 @@ import ItemsCarousel from 'react-items-carousel';
 // import MultiCarousel from "react-multi-carousel";
 import { BsFillArrowLeftCircleFill, BsFillArrowRightCircleFill } from 'react-icons/bs'
 import { useWindowDimensions } from '../../hooks/useWindownDimension'
-
+import { toast } from 'react-toastify'
 
 interface props { }
 
@@ -62,7 +62,12 @@ export const Home: React.FC<props> = ({ }) => {
         setDomesticProducts(data)
         return
       } catch (error: any) {
-        console.log(error)
+        if (error.response.data.erro) {
+          toast.error(error.response.data.erro)
+          return
+        }
+        toast.error("Erro ao listar produtos")
+        return
       }
     }
     initialize()
@@ -99,7 +104,7 @@ export const Home: React.FC<props> = ({ }) => {
   };
 
   const onChangeSlideCarrousel = (currentSlide: number) => {
-    // console.log(currentSlide);
+
   };
 
   const { Text, Title, Link } = Typography

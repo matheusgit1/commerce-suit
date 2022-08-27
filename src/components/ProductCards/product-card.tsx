@@ -43,7 +43,6 @@ export const ProductCards: React.FC<props> = ({ data }) => {
   const productContext = useProductContext()
   const navigate = useNavigate()
   React.useEffect(() => {
-    // console.log("use: ", data)
     //do something
   }, [])
 

@@ -111,7 +111,6 @@ export const FormEditAdress: React.FC<props> = ({ data, type }) => {
         uf: uf,
         reference: reference,
       }, { 'Authorization': `Bearer ${authContext.user?.access_token}` })
-      console.log(response.data)
       toast.success("Endereço criado")
       return
     } catch (error: any) {
@@ -123,19 +122,6 @@ export const FormEditAdress: React.FC<props> = ({ data, type }) => {
   const editAdress = async () => {
     try {
       setLoading(true)
-
-      console.log({
-        city: city,
-        street: street,
-        district: district,
-        zipCode: zipCode,
-        number: number,
-        block: block.toString(),
-        state: state,
-        uf: uf,
-        reference: reference,
-        adressId: data?.id || ''
-      })
 
       const response = await authContext.updateUserAdress({
         city: city,
@@ -171,7 +157,7 @@ export const FormEditAdress: React.FC<props> = ({ data, type }) => {
   };
 
   const onFinishFailed = (errorInfo: any) => {
-    console.log('Failed:', errorInfo);
+
   };
 
 
@@ -179,7 +165,6 @@ export const FormEditAdress: React.FC<props> = ({ data, type }) => {
     <React.Fragment>
       <Form
         name="edit-adress-form"
-        onSubmitCapture={(e) => console.log("event capture: ", e)}
         // form={form}
         layout="vertical"
         onFinish={(e) => { type === "edit" ? editAdress() : createAdress() }}

@@ -43,7 +43,7 @@ export const ListAdressAndSelect: React.FC<props> = ({ }) => {
 
 
   React.useEffect(() => {
-    console.log("useEffect: ", authContext.userListAdress)
+    //do something
   }, [authContext.userListAdress, authContext.userAdress])
 
   const deleteAdress = async (adressId: string) => {

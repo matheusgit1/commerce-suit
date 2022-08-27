@@ -5,7 +5,9 @@ export const paths = {
   verifyAcount: "/verificar-conta",
   resetPassword: "/reiniciar-senha",
   changePasswordWithoutLogin: "/troca-de-senha/:token",
-  productById: "/produto/:id"
+  productById: "/produto/:id",
+  myPurchases: "/minhas-compras",
+  wishList: "/minha-lista-de-desejos"
 }
 
 

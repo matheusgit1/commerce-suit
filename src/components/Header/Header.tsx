@@ -34,8 +34,7 @@ export const Header: React.FC<props> = () => {
 
   React.useEffect(() => {
     const initialize = () => {
-      console.log("endereço: ", authContext.userAdress)
-      console.log("list: ", authContext.userListAdress)
+      //do something
     }
     initialize()
   }, [authContext.user, authContext.userAdress, authContext.userListAdress])
@@ -91,7 +90,7 @@ export const Header: React.FC<props> = () => {
           <Text ellipsis={true}>{authContext.userAdress?.street || "Endereço"}</Text>
         </Menu.Item>
 
-        <Menu.Item key="buyes" icon={<ShoppingCartOutlined />}>
+        <Menu.Item onClick={() => navigate(paths.myPurchases)} key="buyes" icon={<ShoppingCartOutlined />}>
           <Text>Compras</Text>
         </Menu.Item>
 
@@ -127,7 +126,7 @@ export const Header: React.FC<props> = () => {
 
             <Menu.ItemGroup title="Compras">
 
-              <Menu.Item key="1-Compras" icon={<AppstoreOutlined />}>
+              <Menu.Item onClick={() => navigate(paths.wishList)} key="1-Compras" icon={<AppstoreOutlined />}>
                 <Text>Lista de desejos</Text>
               </Menu.Item>
 

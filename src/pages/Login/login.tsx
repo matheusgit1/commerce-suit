@@ -34,7 +34,6 @@ export const Login: React.FC<props> = ({ }) => {
     event.preventDefault()
     try {
       const response = await AuthContext.login({ email: email, password: password })
-      // console.log(response)
       AuthContext.createUser(response.data)
       toast.success("Bem vindo!")
       navigate(paths.home)

@@ -70,9 +70,7 @@ export function AuthContextProvider(props: AuthContextProvidersProps) {
       const lv_user = localStorage.getItem(USER_IN_LOCAL_STORAGE)
       if (lv_user) {
         const lv_user_parsed = JSON.parse(lv_user)
-        console.log("lv_user_parsed: ", lv_user_parsed)
         setUser(lv_user_parsed)
-        console.log(lv_user_parsed)
         return
       }
     }
@@ -86,17 +84,11 @@ export function AuthContextProvider(props: AuthContextProvidersProps) {
       if (lv_adress) {
         const lv_adress_parsed = JSON.parse(lv_adress)
         setUserAdress(lv_adress_parsed)
-        // console.log(lv_adress_parsed)
       }
-
-      console.log("user: ", user)
 
       if (user) {
         const res = await listUserAdress()
-        console.log("list adress: ", res.data)
         setUserListAdress(res.data)
-        //@ts-ignore
-        console.log("access_token: ", user?.access_token)
       }
 
       return

@@ -7,6 +7,8 @@ import {
 
 import {
   Home,
+  WishList,
+  MyPurchases
 } from '../pages'
 
 import { paths } from '../mocks/paths'
@@ -33,6 +35,8 @@ export const Routing = () => {
         }
         <Routes>
           <Route path={paths.home} element={<Home />} />
+          <Route path={paths.wishList} element={<WishList />} />
+          <Route path={paths.myPurchases} element={<MyPurchases />} />
         </Routes>
         <ToastContainer />
       </Router>

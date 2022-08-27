@@ -62,7 +62,6 @@ export const ProductById: React.FC<props> = ({ }) => {
       //@ts-ignore
       if (!productdata) return
       const { data } = await productContext.getListProductByCategory({ categories: productdata.categories })
-      // console.log("getListProductByCategory: ", data)
       setListProduct(data)
 
     }

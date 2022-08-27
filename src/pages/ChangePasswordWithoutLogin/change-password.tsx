@@ -37,7 +37,6 @@ export const ChangePasswordWithoutLogin: React.FC<props> = ({ }) => {
       const { data } = await AuthContext.changePasswordWithoutLogin({ email: email, password: password, confirmPassword: confirmPassword, token: params.token })
       toast.success(data.mensagem)
       navigate(paths.login)
-      // console.log(data)
       return;
     } catch (error: any) {
       if (error.response.data.erro) {

@@ -36,7 +36,6 @@ export const Register: React.FC<props> = ({ }) => {
       const response = await AuthContext.register({ email, password, confirmPassword, name, document, phone })
       toast.success(response.data.mensagem)
       navigate(paths.verifyAcount, { state: { email: email } })
-      // console.log(response.data)
       return;
     } catch (error: any) {
       if (error.response.data.erro) {

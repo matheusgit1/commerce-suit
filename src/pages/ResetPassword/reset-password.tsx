@@ -35,7 +35,6 @@ export const ResetPassword: React.FC<props> = ({ }) => {
     try {
       const response = await AuthContext.resetPassword({ email: email })
       toast.success(response.data.mensagem)
-      // console.log(response.data)
       return;
     } catch (error: any) {
       if (error.response.data.erro) {
@@ -46,7 +45,6 @@ export const ResetPassword: React.FC<props> = ({ }) => {
       return
     }
 
-    // console.log(email)
     return;
   }
   // const [password, setPassword] = React.useState<string>('')
