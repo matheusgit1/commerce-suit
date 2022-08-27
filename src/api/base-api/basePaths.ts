@@ -16,4 +16,8 @@ export class BasePaths {
   public getBaseurlOfProductsApi(): IBasePath{
     return { basePath: 'http://127.0.0.1:3003/v1/product', timeout: 15000 }
   }
+
+  public getBaseurlOfAdressApi(): IBasePath{
+    return { basePath: 'http://127.0.0.1:3002/v1/adress', timeout: 15000 }
+  }
 }
