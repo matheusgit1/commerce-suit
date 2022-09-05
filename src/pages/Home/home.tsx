@@ -26,32 +26,20 @@ export const Home: React.FC<props> = ({ }) => {
   const [modalEngineVisible, setModalEngneVisible] = React.useState<boolean>(false)
   const [activeItemIndex, setActiveItemIndex] = React.useState<number>(0);
 
-  const [indexPagination, setIndexPagination] = React.useState<number[]>([0, 2])
+  const [indexPagination, setIndexPagination] = React.useState<number>(1)
   // const [listByIndex, setListByIndex] = React.useState<Array<any>>()
 
   const { width } = useWindowDimensions()
 
-  //useEffect to create pagination 
-  // React.useEffect(() => {
-  //   const initialize = () => {
-  //     for (let i = indexPagination[0]; i <= indexPagination[1]; i++) {
-  //       if (listProduct[i] != (null || undefined)) {
-  //         listByIndex?.push(listProduct[i])
-  //       }
-  //     }
-  //   }
-  //   return initialize()
-  // }, [listProduct, indexPagination])
-
   //carrega lista de ultimos anuncios (genericos)
   React.useEffect(() => {
     const initialize = async () => {
-      const { data } = await productContext.getListProductWithLimit()
+      const { data } = await productContext.getListProductWithLimit(indexPagination - 1)
       setListProduct(data)
       return
     }
     initialize()
-  }, [])
+  }, [indexPagination])
 
 
   //listagem de produtos com categora domestico
@@ -141,7 +129,7 @@ export const Home: React.FC<props> = ({ }) => {
       </Row>
 
       <Row style={{ justifyContent: "space-around", marginTop: 15, marginBottom: 15 }} >
-        <Pagination onChange={(e) => setIndexPagination([2 * e - 2, 2 * e])} defaultCurrent={1} total={(listProduct.length / 2)} />
+        <Pagination onChange={(e) => setIndexPagination(e)} defaultCurrent={1} total={1000} />
         {/* (listProduct?.length || 20) / 20 */}
       </Row>
 
