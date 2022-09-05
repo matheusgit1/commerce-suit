@@ -4,7 +4,7 @@ interface props { }
 export const MyPurchases: React.FC<props> = ({ }) => {
   return (
     <React.Fragment>
-      <h1>hello world!</h1>
+      <h1>MyPurchases!</h1>
     </React.Fragment>
   )
 }
