@@ -30,4 +30,5 @@ export class ProductApi {
       const response = await this.httpClient.execute.get(`/${productId}`)
       return response
     }
+
 }
