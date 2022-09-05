@@ -1,6 +1,8 @@
 import React from "react"
-import { Card, Modal, Row, Col, Typography, Rate, Image } from 'antd';
+import { Card, Modal, Row, Typography, Rate, Image, Button, message, Space, Col } from 'antd';
 import { useWindowDimensions } from '../../hooks/useWindownDimension'
+import { ShoppingTwoTone, TagTwoTone, ProfileTwoTone } from '@ant-design/icons'
+import { useProductContext, useAuthContext } from '../../context'
 import ReactImageMagnify from 'react-image-magnify'
 
 interface IProduct {
@@ -30,14 +32,40 @@ interface IProductFeatures {
 interface props {
   data: IProduct
   isComplete?: boolean,
+  wishListButton?: boolean,
 }
 
-export const ProductDetails: React.FC<props> = ({ data, isComplete = false }) => {
+export const ProductDetails: React.FC<props> = ({ data, isComplete = false, wishListButton = false }) => {
 
   const { width } = useWindowDimensions()
   const { Text, Title, Paragraph } = Typography
 
+  const productContext = useProductContext()
+  const authContext = useAuthContext()
+
   const [fileList, setFileList] = React.useState<string[]>(data.images)
+
+  const addToWishList = async () => {
+    try {
+      const response = await productContext.addToWishList(data.id, authContext.user?.access_token || "")
+      message.success("adicionado a sua lista de desejos!")
+      return
+    } catch (error) {
+      message.success("erro ao concluir ação")
+      return
+    }
+  }
+
+  const removeFromWishlist = async () => {
+    try {
+      const response = await productContext.removeFromWishlist(data.id, authContext.user?.access_token || "")
+      message.warn("removido da sua lista de desejos!")
+      return
+    } catch (error) {
+      message.success("erro ao concluir ação")
+      return
+    }
+  }
 
   return (
     <React.Fragment>
@@ -86,6 +114,50 @@ export const ProductDetails: React.FC<props> = ({ data, isComplete = false }) =>
           <Text>vendido por <Text strong>{data?.seller}</Text></Text>
           {/* <Title level={3}>dados do vendendor</Title>
           <Text> vendido por {"randonstring"}</Text> */}
+          {
+            wishListButton && (
+              <div>
+                <Space>
+                  <Button
+                    style={{ width: 180, marginTop: 10 }}
+                    danger={productContext.wishList.includes(data.id)}
+                    icon={
+                      <ShoppingTwoTone
+                        twoToneColor={
+                          !productContext.wishList.includes(data.id) ? 'blue' : 'red'}
+                      />
+                    }
+                    key="addToWishList"
+                    onClick={() => !productContext.wishList.includes(data.id) ? addToWishList() : removeFromWishlist()}
+                  >
+                    {!productContext.wishList.includes(data.id) ? 'lista de desejos' : 'remover dos desejos'}
+                  </Button>
+
+                  <Button
+                    style={{ width: 180, marginTop: 10 }}
+                    icon={
+                      <TagTwoTone twoToneColor="blue" />
+                    }
+                    key="purchaseItem"
+                    onClick={() => message.success("comprando")}
+                  >
+                    ir para compra
+                  </Button>
+
+                  <Button
+                    style={{ width: 180, marginTop: 10 }}
+                    icon={
+                      <ProfileTwoTone twoToneColor="blue" />
+                    }
+                    key="addTocart"
+                    onClick={() => message.success("comprando")}
+                  >
+                    adicionar ao carrinho
+                  </Button>
+                </Space>
+              </div>
+            )
+          }
         </Col>
       </Row>
     </React.Fragment>
