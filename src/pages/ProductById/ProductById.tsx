@@ -37,7 +37,20 @@ export const ProductById: React.FC<props> = ({ }) => {
   const productContext = useProductContext()
   const [productdata, setProductData] = React.useState<IProduct>()
 
-  const [listProduct, setListProduct] = React.useState<Array<any>>()
+  const [listProduct, setListProduct] = React.useState<Array<any>>([])
+  const [indexPagination, setIndexPagination] = React.useState<number>(1)
+
+
+  //carrega lista de ultimos anuncios (genericos)
+  React.useEffect(() => {
+    const initialize = async () => {
+      const { data } = await productContext.getListProductWithLimit(indexPagination - 1)
+      setListProduct(data)
+      return
+    }
+    initialize()
+  }, [indexPagination])
+
 
   const { Title } = Typography
   React.useEffect(() => {
@@ -63,7 +76,6 @@ export const ProductById: React.FC<props> = ({ }) => {
       if (!productdata) return
       const { data } = await productContext.getListProductByCategory({ categories: productdata.categories })
       setListProduct(data)
-
     }
 
     initialize()
@@ -72,7 +84,7 @@ export const ProductById: React.FC<props> = ({ }) => {
   return (
     <React.Fragment>
       {/* @ts-ignore */}
-      <ProductDetails data={location.state?.data || productdata} />
+      <ProductDetails data={location.state?.data || productdata} wishListButton={true} />
       <Divider style={{ width: 16 }} orientation="left">
         <Title style={{ margin: 45 }}> Relacionados </Title>
       </Divider>
@@ -85,13 +97,9 @@ export const ProductById: React.FC<props> = ({ }) => {
           ))
         }
       </Row>
-      <Row style={{ justifyContent: "space-around" }} >
-        <Pagination
-          total={listProduct?.length}
-          showTotal={(total, range) => `${range[0]}-${range[1]} of ${total} items`}
-          defaultPageSize={20}
-          defaultCurrent={1}
-        />
+      <Row style={{ justifyContent: "space-around", marginTop: 15, marginBottom: 15 }} >
+        <Pagination onChange={(e) => setIndexPagination(e)} defaultCurrent={1} total={1000} />
+        {/* (listProduct?.length || 20) / 20 */}
       </Row>
     </React.Fragment>
   )
