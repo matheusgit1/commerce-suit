@@ -17,8 +17,8 @@ import {
   LoginOutlined,
   PlusCircleOutlined
 } from '@ant-design/icons';
-import { Menu, Typography, Modal, Button } from 'antd';
-import { useAuthContext } from '../../context'
+import { Menu, Typography, Modal, Button, Badge } from 'antd';
+import { useAuthContext, useProductContext } from '../../context'
 import { useNavigate } from 'react-router-dom'
 import { paths } from '../../mocks/paths'
 import { ListAdressAndSelect } from '../../components/ListAdressAndSelect'
@@ -31,17 +31,28 @@ export const Header: React.FC<props> = () => {
   const navigate = useNavigate()
   const { Text } = Typography
   const authContext = useAuthContext()
+  const productContext = useProductContext()
 
+
+  //relacionados ao contexto de autenticação
   React.useEffect(() => {
-    const initialize = () => {
+    const initialize = async () => {
       //do something
     }
     initialize()
   }, [authContext.user, authContext.userAdress, authContext.userListAdress])
 
+  //relacionados ao contexto de produtos
+  React.useEffect(() => {
+    const initialize = async () => {
+      //do something
+    }
+    initialize()
+  }, [productContext.cartIds])
+
+
+
   const [visible, setVisible] = React.useState<boolean>(false);
-
-
   const [visibleEditAdressModal, setVisibleEditAdressModal] = React.useState<boolean>(false)
   const [loading, setLoading] = React.useState<boolean>(false)
 
@@ -91,7 +102,11 @@ export const Header: React.FC<props> = () => {
         </Menu.Item>
 
         <Menu.Item onClick={() => navigate(paths.myPurchases)} key="buyes" icon={<ShoppingCartOutlined />}>
-          <Text>Compras</Text>
+          <Text>
+            <Badge count={productContext.cartIds.length} overflowCount={10} size="default">
+              Compras
+            </Badge>
+          </Text>
         </Menu.Item>
 
         <Menu.Item key="questions-1" icon={<QuestionCircleOutlined />}>
