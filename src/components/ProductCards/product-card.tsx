@@ -1,8 +1,8 @@
 import React from 'react';
 import { HiTag } from 'react-icons/hi'
-import { useProductContext } from '../../context'
+import { useProductContext, useAuthContext } from '../../context'
 import { useWindowDimensions } from '../../hooks/useWindownDimension'
-import { Card, Modal, Button } from 'antd';
+import { Card, Modal, Button, message } from 'antd';
 import { ShoppingTwoTone, HeartTwoTone } from '@ant-design/icons'
 import { ProductDetails } from '..'
 import { useNavigate } from 'react-router-dom'
@@ -33,34 +33,47 @@ interface IProduct {
 }
 
 interface props {
-  data: IProduct
+  data: IProduct,
+  wishListButton?: boolean
 }
 
 
-export const ProductCards: React.FC<props> = ({ data }) => {
+export const ProductCards: React.FC<props> = ({ data, wishListButton }) => {
   // const { width } = useWindowDimensions()
   const { Meta } = Card;
   const productContext = useProductContext()
+  const authContext = useAuthContext()
   const navigate = useNavigate()
-  React.useEffect(() => {
-    //do something
-  }, [])
-
-  const addToWishList = async () => {
-    const response = await productContext.addToWishList(data.id)
-    if (response) {
-      setInWishListColor('red')
-      return
-    }
-    setInWishListColor('gray')
-  }
 
   const [isModalVisible, setIsModalVisible] = React.useState<boolean>(false)
-  const [InWishListColor, setInWishListColor] = React.useState<string>('gray')
 
   React.useEffect(() => {
+    // console.log(productContext.wishList)
+  }, [productContext.wishList])
 
-  }, [InWishListColor])
+  const addToWishList = async () => {
+    try {
+      const response = await productContext.addToWishList(data.id, authContext.user?.access_token || "")
+      message.success("adicionado a sua lista de desejos!")
+      return
+    } catch (error) {
+      message.success("erro ao concluir ação")
+      return
+    }
+  }
+
+  const removeFromWishlist = async () => {
+    try {
+      const response = await productContext.removeFromWishlist(data.id, authContext.user?.access_token || "")
+      message.warn("removido da sua lista de desejos!")
+      return
+    } catch (error) {
+      message.success("erro ao concluir ação")
+      return
+    }
+  }
+
+
 
   const elipses = (): string => {
     if (data.description.length > 27) {
@@ -79,10 +92,26 @@ export const ProductCards: React.FC<props> = ({ data }) => {
         width={850}
         style={{ padding: 0 }}
         footer={[
-          <Button icon={<ShoppingTwoTone />} key="addToWishList" onClick={() => addToWishList()}>
-            Lista de desejos
+          <Button
+            danger={productContext.wishList.includes(data.id)}
+            icon={
+              <ShoppingTwoTone
+                twoToneColor={
+                  !productContext.wishList.includes(data.id) ? 'blue' : 'red'}
+              />
+            }
+            key="addToWishList"
+            onClick={() => !productContext.wishList.includes(data.id) ? addToWishList() : removeFromWishlist()}
+          >
+            {!productContext.wishList.includes(data.id) ? 'lista de desejos' : 'remover dos desejos'}
           </Button>,
-          <Button danger key="close" type="default" loading={false} onClick={() => setIsModalVisible(false)}>
+          <Button
+            danger
+            key="close"
+            type="default"
+            loading={false}
+            onClick={() => setIsModalVisible(false)}
+          >
             Fechar
           </Button>,
           <Button
@@ -98,7 +127,7 @@ export const ProductCards: React.FC<props> = ({ data }) => {
           </Button>,
         ]}
       >
-        <ProductDetails data={data} />
+        <ProductDetails data={data} wishListButton={wishListButton} />
       </Modal>
 
       <Card
@@ -107,8 +136,8 @@ export const ProductCards: React.FC<props> = ({ data }) => {
         cover={<img onClick={() => setIsModalVisible(true)} style={{ height: 300, width: "100%" }} alt="example" src={data.images[0] ? data.images[0] : 'https://t4.ftcdn.net/jpg/04/99/93/31/360_F_499933117_ZAUBfv3P1HEOsZDrnkbNCt4jc3AodArl.jpg'} />}
         actions={[
           <HeartTwoTone
-            twoToneColor={InWishListColor}
-            onClick={() => addToWishList()}
+            twoToneColor={productContext.wishList.includes(data.id) ? 'red' : 'blue'}
+            onClick={() => !productContext.wishList.includes(data.id) ? addToWishList() : removeFromWishlist()}
             style={{
               fontSize: 20
             }}
