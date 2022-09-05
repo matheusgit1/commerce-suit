@@ -27,12 +27,7 @@ export const AuthRoutes = () => {
   return (
     <React.Fragment>
       <Routes>
-        <Route path={paths.login} element={<Login />} />
-        <Route path={paths.newAcount} element={<Register />} />
-        <Route path={paths.verifyAcount} element={<VerifyAcount />} />
-        <Route path={paths.resetPassword} element={<ResetPassword />} />
-        <Route path={paths.changePasswordWithoutLogin} element={<ChangePasswordWithoutLogin />} />
-        <Route path={paths.productById} element={<ProductById />} />
+
       </Routes>
       <ToastContainer />
     </React.Fragment>
