@@ -1,4 +1,5 @@
 import React from 'react';
+import { message } from 'antd'
 import { AxiosRequestHeaders, AxiosPromise } from 'axios'
 import { IFilter } from '../../services'
 import { toast } from 'react-toastify'
@@ -13,6 +14,10 @@ export type ProductContextType = {
   removeFromWishlist: (productId: string, token: string) => AxiosPromise
   getProductById: (productId: string) => AxiosPromise
   addProductIntoCart: (productId: string, token: string) => AxiosPromise
+  getUserCartInDetails: (token: string, pagination: number) => AxiosPromise
+  removeFromCart: (token: string, productId: string) => AxiosPromise
+  removeIdFromCartIds: (productId: string) => void
+  getUserWishlistInDetails: (token: string, pagination: number) => AxiosPromise
   wishList: string[]
   cartIds: IUserCart[]
 }
@@ -49,10 +54,10 @@ export function ProductContextProvider(props: ProductContextProvidersProps) {
       try {
         const { data } = await purchaseApi.listWishlist(authContext.user?.access_token || "")
         for (const index in data) {
-          setWishList(oldArray => [...oldArray, data[index]])
+          setWishList(oldArray => [...oldArray, data[index].co_product_id])
         }
       } catch (error: any) {
-        //do somethnig
+        message.error("não foi possivel listar sua lista de desejos")
       }
     }
     initialize()
@@ -67,7 +72,6 @@ export function ProductContextProvider(props: ProductContextProvidersProps) {
         const { data } = await purchaseApi.getUserCart(authContext.user?.access_token || "")
         // console.log(data)
         for (const index in data) {
-          console.log(data[index]?.co_product_id)
           setCartIds(oldArray => [...oldArray, data[index]?.co_product_id])
         }
       } catch (error: any) {
@@ -76,6 +80,10 @@ export function ProductContextProvider(props: ProductContextProvidersProps) {
     }
     initialize()
   }, [authContext.user])
+
+  const removeIdFromCartIds = (productId: string) => {
+    setCartIds(cartIds.filter(item => item.id !== productId))
+  }
 
   const getListProductWithLimit = async (limit: number) => {
     const response = await productApi.getListProductWithLimit(limit)
@@ -109,6 +117,21 @@ export function ProductContextProvider(props: ProductContextProvidersProps) {
     return response
   }
 
+  const getUserCartInDetails = async (token: string, pagination: number) => {
+    const response = await purchaseApi.getUserCartInDetails(token, pagination)
+    return response
+  }
+
+  const removeFromCart = async (token: string, productId: string) => {
+    const response = await purchaseApi.removeFromCart(token, productId)
+    return response
+  }
+
+  const getUserWishlistInDetails = async (token: string, pagination: number) => {
+    const response = await purchaseApi.getUserWishlistInDetails(token, pagination)
+    return response
+  }
+
 
   return (
     <ProductContext.Provider
@@ -119,6 +142,10 @@ export function ProductContextProvider(props: ProductContextProvidersProps) {
         getListProductByCategory,
         getProductById,
         addProductIntoCart,
+        getUserCartInDetails,
+        removeFromCart,
+        removeIdFromCartIds,
+        getUserWishlistInDetails,
         wishList,
         cartIds
       }}
