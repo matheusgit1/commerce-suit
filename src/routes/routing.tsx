@@ -14,11 +14,11 @@ import {
   Home,
   ProductById,
   NotFound,
-  MyPurchases
+  MyPurchases,
+  WishList
 } from '../pages'
 import { paths } from '../mocks/paths'
 import { ToastContainer } from 'react-toastify';
-import { AuthRoutes } from './authRoutes'
 import { Header } from '../components'
 
 export const Routing = () => {
@@ -43,7 +43,8 @@ export const Routing = () => {
           <Route path={paths.changePasswordWithoutLogin} element={<ChangePasswordWithoutLogin />} />
           <Route path={paths.productById} element={<ProductById />} />
           <Route path={paths.home || ""} element={<Home />} />
-          <Route path={paths.myPurchases || ""} element={<MyPurchases />} />
+          <Route path={paths.myPurchases} element={<MyPurchases />} />
+          <Route path={paths.wishList} element={<WishList />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
         <ToastContainer />
@@ -52,16 +53,3 @@ export const Routing = () => {
   );
 }
 
-
-{/* <Router>
-                <Routes>
-                  <Route path={paths.home} element={<Home />} />
-                  <Route path={paths.login} element={<Login />} />
-                  <Route path={paths.newAcount} element={<Register />} />
-                  <Route path={paths.verifyAcount} element={<VerifyAcount />} />
-                  <Route path={paths.resetPassword} element={<ResetPassword />} />
-                  <Route path={paths.changePasswordWithoutLogin} element={<ChangePasswordWithoutLogin />} />
-                  <Route path={paths.productById} element={<ProductById />} />
-                </Routes>
-                <ToastContainer />
-              </Router> */}
