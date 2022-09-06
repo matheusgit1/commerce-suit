@@ -1,10 +1,236 @@
 import React from 'react'
+import {
+  Card,
+  Typography,
+  Button,
+  Modal,
+  Col,
+  Form,
+  Space,
+  Skeleton,
+  message,
+  Result,
+  Row,
+  Pagination,
+  Divider
+} from 'antd'
+import {
+  EditOutlined,
+  DeleteOutlined,
+  CheckOutlined,
+  PlusCircleOutlined
+} from '@ant-design/icons'
+import { useWindowDimensions } from '../../hooks/useWindownDimension'
+import { BsTruck } from 'react-icons/bs'
+import { } from 'react-icons/bs'
+import { useAuthContext, useProductContext } from '../../context'
+import { toast } from 'react-toastify'
+import { FormEditAdress, TAdressForm } from '../../components'
+import {
+  IAdressFormat
+} from '../../services'
+import { useNavigate } from 'react-router-dom'
+import { paths } from '../../mocks/paths'
+
 interface props { }
 
+interface IProductFeatures {
+  title: string
+  body: {
+    [x: string]: string
+  }
+}
+interface IPurchaseList {
+  id?: string
+  co_created_at?: Date
+  co_updated_at?: Date
+  co_product_name: string
+  co_product_price?: string
+  co_product_description?: string
+  co_product_categories?: string[]
+  co_product_main_categories?: string
+  co_product_installments?: string
+  co_product_images: string[]
+  co_user_id?: string
+  co_product_discount?: string
+  co_product_marc?: string
+  co_product_conditions?: string
+  co_product_features?: IProductFeatures[]
+  co_is_product_active?: boolean,
+  co_five_stars?: string | null
+  co_four_stars?: string | null
+  co_three_stars?: string | null
+  co_two_stars?: string | null
+  co_one_stars?: string | null
+  co_zero_stars?: string
+  co_product_seller?: string
+  co_product_stocks: string
+  co_product_id: string
+  co_quantity?: number
+}
+
 export const MyPurchases: React.FC<props> = ({ }) => {
+  const navigate = useNavigate()
+  const authContext = useAuthContext()
+  const productContext = useProductContext()
+
+  const { Meta } = Card
+  const { Title, Link, Text } = Typography
+  const { width } = useWindowDimensions()
+
+  const [form] = Form.useForm();
+  const [loading, setLoading] = React.useState<boolean>(false)
+  const [pagination, setPagination] = React.useState<number>(0)
+  const [purchaseList, setPurchaseList] = React.useState<IPurchaseList[]>([])
+
+  React.useEffect(() => {
+    const initialize = async () => {
+      try {
+        // console.log(authContext.user)
+        const { data } = await productContext.getUserCartInDetails(authContext.user?.access_token || "", pagination)
+        // console.log(data)
+        setPurchaseList(data)
+      } catch (error: any) {
+        message.error("Erro ao listar seu carrinho de compras")
+      }
+    }
+    initialize()
+  }, [pagination])
+
+  React.useEffect(() => {
+    const initialize = async () => {
+      if (purchaseList.length === 0) return;
+    }
+    initialize()
+  }, [purchaseList])
+
+  const removeFromCart = async (productName: string, productId: string) => {
+    try {
+      const { data } = await productContext.removeFromCart(authContext.user?.access_token || "", productId)
+      //reomove id no contexto global
+      productContext.removeIdFromCartIds(productId)
+      //remove id no contexto local
+      purchaseList.map((values, index) => {
+        if (values.id === productId) {
+          setPurchaseList([...purchaseList?.slice(index, 1)])
+          return
+        }
+      })
+      message.warn(`${productName} Removido de seu carrinho`)
+    } catch (error: any) {
+      message.error("Erro ao remover do carrinho")
+    }
+  }
+
+
   return (
     <React.Fragment>
-      <h1>MyPurchases!</h1>
-    </React.Fragment>
+      <Divider style={{ width: 16 }} orientation="left">
+        <Title style={{ padding: "0px 0px" }}> Sua lista de compras </Title>
+      </Divider>
+      {
+        purchaseList?.length === 0 && (
+          <Result
+            status="404"
+            title="404"
+            subTitle="Você não possui nada ainda em seu carrinho de compras."
+            extra={<Button onClick={() => navigate(paths.home)} type="primary">Ir para o inico</Button>}
+          />
+        )
+      }
+      {
+        purchaseList?.map((values, index) => (
+          // purchaseList?.map((values, index)=>)
+          <Row key={index} style={{ display: "flex", flex: 1, justifyContent: "center", alignItems: "center" }}>
+            <Card
+              onClick={() => width < 400 ? message.warn("ir para compra") : null}
+              style={{ width: width > 700 ? 700 : width, marginTop: 8, boxShadow: 'rgba(100, 100, 111, 0.2) 0px 7px 29px 0px' }}
+              hoverable
+              key={`card-${index}`}
+              loading={false}
+              actions={[
+                <Col>
+                  {
+                    width > 400 && (
+                      <Button
+                        onClick={() => {
+                          null
+                        }}
+                        style={{
+                          color: 'white',
+                          background: '#8fce00'
+                        }}
+                        type="default"
+                        icon={<CheckOutlined />}
+                      >
+                        Finalizar compra
+                      </Button>
+                    )
+                  }
+                  ,
+                  <Button
+                    onClick={() => removeFromCart(values.co_product_name, values.co_product_id)}
+                    danger
+                    icon={<DeleteOutlined />}
+                  >
+                    Excluir
+                  </Button>
+                </Col>
+              ]}
+            >
+              <div onClick={() => {
+                null
+              }}
+              >
+                <Skeleton loading={false}>
+                  <Meta
+                    style={{ justifyContent: "center", alignItems: "center" }}
+                    avatar={width > 600 && <img style={{ width: 250, height: 250 }} src={values?.co_product_images[0] || ""} />}
+                    title={
+                      <>
+                        <Title level={4}>{values?.co_product_name}</Title>
+                      </>
+
+                    }
+                    description={
+                      <>
+                        {
+                          width < 600 && <img style={{ width: 250, height: 250, marginBottom: 30 }} src={values.co_product_images[0]} />
+                        }
+                        <br />
+                        <Text style={{ fontWeight: "bold", fontSize: 20 }} type="secondary">
+                          Vendido por {values.co_product_seller}
+                        </Text><br />
+                        <Text type="secondary">
+                          você está adquirindo {values.co_quantity}
+                        </Text><br />
+                        <Text type="secondary">
+                          {values.co_product_stocks} em estoques
+                        </Text><br />
+                        <Text type="secondary">
+                          id de compra: {values.id}
+                        </Text><br />
+                      </>
+                    }
+                  />
+                </Skeleton>
+              </div>
+            </Card>
+
+          </Row>
+        ))
+      }
+      {
+
+        purchaseList.length > 0 && (
+          <Row style={{ justifyContent: "space-around", marginTop: 15, marginBottom: 15 }} >
+            <Pagination onChange={(e) => setPagination(e)} defaultCurrent={1} total={1000} />
+            {/* (listProduct?.length || 20) / 20 */}
+          </Row>
+        )
+
+      }
+
+    </React.Fragment >
   )
 }
