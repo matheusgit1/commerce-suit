@@ -53,7 +53,7 @@ export const ProductCards: React.FC<props> = ({ data, wishListButton }) => {
 
   const addToWishList = async () => {
     try {
-      const response = await productContext.addToWishList(data.id, authContext.user?.access_token || "")
+      const response = await productContext.addToWishList(data?.id || "", authContext.user?.access_token || "")
       message.success("adicionado a sua lista de desejos!")
       return
     } catch (error) {
@@ -64,7 +64,7 @@ export const ProductCards: React.FC<props> = ({ data, wishListButton }) => {
 
   const removeFromWishlist = async () => {
     try {
-      const response = await productContext.removeFromWishlist(data.id, authContext.user?.access_token || "")
+      const response = await productContext.removeFromWishlist(data?.id || "", authContext.user?.access_token || "")
       message.warn("removido da sua lista de desejos!")
       return
     } catch (error) {
