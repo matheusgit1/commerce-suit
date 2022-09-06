@@ -32,4 +32,19 @@ export class PurchaseApi {
     const response = await this.httpClient.execute.get(`/cart/list`,{headers:{"Authorization": `Bearer ${token}`}})
     return response
   }
+
+  public async getUserCartInDetails(token: string, pagination: number){
+    const response = await this.httpClient.execute.get(`/cart/details/${pagination}`,{headers:{"Authorization": `Bearer ${token}`}})
+    return response
+  }
+
+  public async removeFromCart(token: string, productId: string){
+    const response = await this.httpClient.execute.delete(`/cart/remove`, {data: {productId: productId}, headers:{"Authorization": `Bearer ${token}`}})
+    return response
+  }
+
+  public async getUserWishlistInDetails(token: string, pagination: number){
+    const response = await this.httpClient.execute.get(`/wishlist/details/${pagination}`, {headers:{"Authorization": `Bearer ${token}`}})
+    return response
+  }
 }
