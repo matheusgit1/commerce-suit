@@ -17,13 +17,22 @@ import {
   LoginOutlined,
   PlusCircleOutlined
 } from '@ant-design/icons';
-import { Menu, Typography, Modal, Button, Badge } from 'antd';
+import {
+  Menu,
+  Typography,
+  Modal,
+  Button,
+  Badge,
+  message,
+  Drawer
+} from 'antd';
 import { useAuthContext, useProductContext } from '../../context'
 import { useNavigate } from 'react-router-dom'
 import { paths } from '../../mocks/paths'
 import { ListAdressAndSelect } from '../../components/ListAdressAndSelect'
 import { TAdressForm, FormEditAdress } from '../../components'
-
+import { notification } from './Mocks/notification.mock'
+import { questions } from './Mocks/questions.mock'
 interface props { }
 
 
@@ -55,10 +64,13 @@ export const Header: React.FC<props> = () => {
   const [visible, setVisible] = React.useState<boolean>(false);
   const [visibleEditAdressModal, setVisibleEditAdressModal] = React.useState<boolean>(false)
   const [loading, setLoading] = React.useState<boolean>(false)
+  const [open, setOpen] = React.useState(false);
 
 
   return (
     <React.Fragment>
+
+
       <Modal
         title="Seus endereços"
         centered
@@ -109,13 +121,74 @@ export const Header: React.FC<props> = () => {
           </Text>
         </Menu.Item>
 
-        <Menu.Item key="questions-1" icon={<QuestionCircleOutlined />}>
-          <Text>Perguntas</Text>
-        </Menu.Item>
+        <Menu.SubMenu key="questions-1" title="perguntas" icon={<QuestionCircleOutlined />}>
+          <React.Fragment>
+            <Menu.Item
+              style={{ display: "flex", flex: 1, justifyContent: "center", alignItems: "center" }}
+              key="11-questions"
+            >
+              <Text type="danger">Ilustração</Text>
+            </Menu.Item>
+            {
+              questions.map((values, index) => (
+                <Menu.Item
+                  style={{ maxWidth: 300 }}
+                  key={`${index}-1${index}-questions`}
+                  icon={
+                    <Badge size="default">
+                      <QuestionCircleOutlined />
+                    </Badge>
+                  }
+                >
+                  <Text>{values.body}</Text>
+                </Menu.Item>
+              ))
+            }
+            <Menu.Item
+              style={{ display: "flex", flex: 1, justifyContent: "center", alignItems: "center" }}
+              key="15-questions"
+            >
+              <Button onClick={() => message.success("indo para todas as perguntas")} type="primary">Ir para todas</Button>
+            </Menu.Item>
+          </React.Fragment>
+        </Menu.SubMenu>
 
-        <Menu.Item key="notify-1" icon={<BellOutlined />}>
+        <Menu.SubMenu key="10-Notificações" title="Notificações" icon={<BellOutlined />}>
+          <React.Fragment>
+            <Menu.Item
+              style={{ display: "flex", flex: 1, justifyContent: "center", alignItems: "center" }}
+              key="11-Notificações"
+            >
+              <Text type="danger">Ilustração</Text>
+            </Menu.Item>
+            {
+              notification.map((values, index) => (
+                <Menu.Item
+                  style={{ maxWidth: 300 }}
+                  key={`${index}-1${index}-Notificações`}
+                  icon={
+                    <Badge size="default">
+                      <BellOutlined />
+                    </Badge>
+                  }
+                >
+                  <Text>{values.body}</Text>
+                </Menu.Item>
+              ))
+            }
+
+            <Menu.Item
+              style={{ display: "flex", flex: 1, justifyContent: "center", alignItems: "center" }}
+              key="15-Notificações"
+            >
+              <Button onClick={() => message.success("indo para todas as notificações")} type="primary">Ir para todas</Button>
+            </Menu.Item>
+          </React.Fragment>
+        </Menu.SubMenu>
+
+        {/* <Menu.Item key="notify-1" icon={<BellOutlined />}>
           <Text>Notificações</Text>
-        </Menu.Item>
+        </Menu.Item> */}
 
         {
           !authContext.user ? (
@@ -124,6 +197,8 @@ export const Header: React.FC<props> = () => {
             </Menu.Item>
           ) : <Menu.SubMenu key="user" title="USUARIO" icon={<UserOutlined />}>
             <Menu.ItemGroup title="Configurações">
+
+
 
               <Menu.Item key="1-Configurações" icon={<BellOutlined />}>
                 <Text>Notificações</Text>
@@ -142,10 +217,12 @@ export const Header: React.FC<props> = () => {
             <Menu.ItemGroup title="Compras">
 
               <Menu.Item onClick={() => navigate(paths.wishList)} key="1-Compras" icon={<AppstoreOutlined />}>
-                <Text>Lista de desejos</Text>
+                <Badge count={productContext.wishList.length} overflowCount={10} size="default">
+                  <Text>Lista de desejos</Text>
+                </Badge>
               </Menu.Item>
 
-              <Menu.Item key="2-Compras" icon={<AppstoreOutlined />}>
+              <Menu.Item onClick={() => navigate(paths.myPurchases)} key="2-Compras" icon={<AppstoreOutlined />}>
                 <Text>compras</Text>
               </Menu.Item>
 
@@ -153,7 +230,7 @@ export const Header: React.FC<props> = () => {
 
             <Menu.ItemGroup title="Perfil">
 
-              <Menu.Item key="1-Perfil" icon={<ProfileOutlined />}>
+              <Menu.Item onClick={() => setOpen(true)} key="1-Perfil" icon={<ProfileOutlined />}>
                 <Text>Meu perfil</Text>
               </Menu.Item>
 
@@ -181,6 +258,6 @@ export const Header: React.FC<props> = () => {
 
 
       </Menu>
-    </React.Fragment>
+    </React.Fragment >
   )
 }
