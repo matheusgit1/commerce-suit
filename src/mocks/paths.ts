@@ -7,7 +7,7 @@ export const paths = {
   changePasswordWithoutLogin: "/troca-de-senha/:token",
   productById: "/produto/:id",
   myPurchases: "/minhas-compras",
-  wishList: "/minha-lista-de-desejos"
+  wishList: "/minha-lista-de-desejos",
 }
 
 
