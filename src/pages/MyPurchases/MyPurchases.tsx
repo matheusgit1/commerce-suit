@@ -82,20 +82,23 @@ export const MyPurchases: React.FC<props> = ({ }) => {
   const [loading, setLoading] = React.useState<boolean>(false)
   const [pagination, setPagination] = React.useState<number>(0)
   const [purchaseList, setPurchaseList] = React.useState<IPurchaseList[]>([])
+  const [excluded, setExcludeds] = React.useState<string[]>([])
+
 
   React.useEffect(() => {
     const initialize = async () => {
       try {
-        // console.log(authContext.user)
+        console.log(authContext.user)
         const { data } = await productContext.getUserCartInDetails(authContext.user?.access_token || "", pagination)
-        // console.log(data)
+        console.log(data)
         setPurchaseList(data)
       } catch (error: any) {
-        message.error("Erro ao listar seu carrinho de compras")
+        // message.error("Erro ao listar seu carrinho de compras")
       }
     }
     initialize()
   }, [pagination])
+
 
   React.useEffect(() => {
     const initialize = async () => {
@@ -111,12 +114,14 @@ export const MyPurchases: React.FC<props> = ({ }) => {
       productContext.removeIdFromCartIds(productId)
       //remove id no contexto local
       purchaseList.map((values, index) => {
-        if (values.id === productId) {
+        if (values.co_product_id === productId) {
           setPurchaseList([...purchaseList?.slice(index, 1)])
           return
         }
       })
+      setExcludeds(oldArray => [...oldArray, productId])
       message.warn(`${productName} Removido de seu carrinho`)
+
     } catch (error: any) {
       message.error("Erro ao remover do carrinho")
     }
@@ -140,84 +145,92 @@ export const MyPurchases: React.FC<props> = ({ }) => {
       }
       {
         purchaseList?.map((values, index) => (
-          // purchaseList?.map((values, index)=>)
-          <Row key={index} style={{ display: "flex", flex: 1, justifyContent: "center", alignItems: "center" }}>
-            <Card
-              onClick={() => width < 400 ? message.warn("ir para compra") : null}
-              style={{ width: width > 700 ? 700 : width, marginTop: 8, boxShadow: 'rgba(100, 100, 111, 0.2) 0px 7px 29px 0px' }}
-              hoverable
-              key={`card-${index}`}
-              loading={false}
-              actions={[
-                <Col>
-                  {
-                    width > 400 && (
-                      <Button
-                        onClick={() => {
-                          null
-                        }}
-                        style={{
-                          color: 'white',
-                          background: '#8fce00'
-                        }}
-                        type="default"
-                        icon={<CheckOutlined />}
-                      >
-                        Finalizar compra
-                      </Button>
-                    )
-                  }
-                  ,
-                  <Button
-                    onClick={() => removeFromCart(values.co_product_name, values.co_product_id)}
-                    danger
-                    icon={<DeleteOutlined />}
-                  >
-                    Excluir
-                  </Button>
-                </Col>
-              ]}
-            >
-              <div onClick={() => {
-                null
-              }}
+          <React.Fragment>
+
+            <Row key={index} style={{ display: "flex", flex: 1, justifyContent: "center", alignItems: "center" }}>
+              <Card
+                onClick={() => width < 400 ? message.warn("ir para compra") : null}
+                style={{ width: width > 700 ? 700 : width, marginTop: 8, boxShadow: 'rgba(100, 100, 111, 0.2) 0px 7px 29px 0px' }}
+                hoverable
+                key={`card-${index}`}
+                loading={false}
+                actions={[
+                  <Col>
+                    {
+                      width > 400 && (
+                        <Button
+                          onClick={() => {
+                            if (excluded.includes(values.co_product_id)) {
+                              message.warn("Vôce removeu esse item do seu carrinho")
+                              return;
+                            }
+                            navigate(`/minhas-compras/checkout/${values.co_product_id}`, { state: { data: values } })
+                          }
+                          }
+                          style={{
+                            color: 'white',
+                            background: '#8fce00'
+                          }}
+                          type="default"
+                          icon={<CheckOutlined />}
+                        >
+                          Finalizar compra
+                        </Button>
+                      )
+                    }
+                    ,
+                    <Button
+                      onClick={() => removeFromCart(values.co_product_name, values.co_product_id)}
+                      danger
+                      icon={<DeleteOutlined />}
+                    >
+                      Excluir
+                    </Button>
+                  </Col>
+                ]}
               >
-                <Skeleton loading={false}>
-                  <Meta
-                    style={{ justifyContent: "center", alignItems: "center" }}
-                    avatar={width > 600 && <img style={{ width: 250, height: 250 }} src={values?.co_product_images[0] || ""} />}
-                    title={
-                      <>
-                        <Title level={4}>{values?.co_product_name}</Title>
-                      </>
+                <div onClick={() => {
+                  null
+                }}
+                >
+                  <Skeleton loading={false}>
+                    <Meta
+                      style={{ justifyContent: "center", alignItems: "center" }}
+                      avatar={width > 600 && <img style={{ width: 250, height: 250 }} src={values?.co_product_images[0] || ""} />}
+                      title={
+                        <>
+                          <Title level={4}>{values?.co_product_name}</Title>
+                        </>
 
-                    }
-                    description={
-                      <>
-                        {
-                          width < 600 && <img style={{ width: 250, height: 250, marginBottom: 30 }} src={values.co_product_images[0]} />
-                        }
-                        <br />
-                        <Text style={{ fontWeight: "bold", fontSize: 20 }} type="secondary">
-                          Vendido por {values.co_product_seller}
-                        </Text><br />
-                        <Text type="secondary">
-                          você está adquirindo {values.co_quantity}
-                        </Text><br />
-                        <Text type="secondary">
-                          {values.co_product_stocks} em estoques
-                        </Text><br />
-                        <Text type="secondary">
-                          id de compra: {values.id}
-                        </Text><br />
-                      </>
-                    }
-                  />
-                </Skeleton>
-              </div>
-            </Card>
+                      }
+                      description={
+                        <>
+                          {
+                            width < 600 && <img style={{ width: 250, height: 250, marginBottom: 30 }} src={values.co_product_images[0]} />
+                          }
+                          <br />
+                          <Text style={{ fontWeight: "bold", fontSize: 20 }} type="secondary">
+                            Vendido por {values.co_product_seller}
+                          </Text><br />
+                          <Text type="secondary">
+                            você está adquirindo {values.co_quantity}
+                          </Text><br />
+                          <Text type="secondary">
+                            {values.co_product_stocks} em estoques
+                          </Text><br />
+                          <Text type="secondary">
+                            id de compra: {values.id}
+                          </Text><br />
+                        </>
+                      }
+                    />
+                  </Skeleton>
+                </div>
+              </Card>
 
-          </Row>
+            </Row>
+
+          </React.Fragment>
         ))
       }
       {
