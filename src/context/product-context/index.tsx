@@ -82,7 +82,7 @@ export function ProductContextProvider(props: ProductContextProvidersProps) {
   }, [authContext.user])
 
   const removeIdFromCartIds = (productId: string) => {
-    setCartIds(cartIds.filter(item => item.id !== productId))
+    setCartIds(cartIds.filter(item => item.co_product_id !== productId))
   }
 
   const getListProductWithLimit = async (limit: number) => {
