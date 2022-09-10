@@ -31,7 +31,8 @@ import {
 } from '../../context'
 
 import {
-  ProductDetails
+  ProductDetails,
+  ProductFeatures
 } from '../../components'
 
 import {
@@ -164,6 +165,7 @@ export const Checkout: React.FC<props> = ({ }) => {
                 stocks: +productdata.co_product_stocks
               }}
             />
+            <ProductFeatures data={productdata.co_product_features} />
           </Col>
         </Row>
     },

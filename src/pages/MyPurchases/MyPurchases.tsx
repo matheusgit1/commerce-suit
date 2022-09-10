@@ -88,9 +88,9 @@ export const MyPurchases: React.FC<props> = ({ }) => {
   React.useEffect(() => {
     const initialize = async () => {
       try {
-        console.log(authContext.user)
+        // console.log(authContext.user)
         const { data } = await productContext.getUserCartInDetails(authContext.user?.access_token || "", pagination)
-        console.log(data)
+        // console.log(data)
         setPurchaseList(data)
       } catch (error: any) {
         // message.error("Erro ao listar seu carrinho de compras")

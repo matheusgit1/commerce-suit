@@ -55,9 +55,9 @@ export const WishList: React.FC<props> = ({ }) => {
       try {
         if (productContext.wishList.length === 0) return;
         const { data } = await productContext.getUserWishlistInDetails(authContext.user?.access_token || "", pagination)
-        console.log(data)
+        // console.log(data)
         setUserWishListProduct(data)
-        console.log(productContext.wishList)
+        // console.log(productContext.wishList)
       } catch (error: any) {
         message.error("Erro ao recupera sua lisa de desejos")
       }
