@@ -8,6 +8,7 @@ export const paths = {
   productById: "/produto/:id",
   myPurchases: "/minhas-compras",
   wishList: "/minha-lista-de-desejos",
+  checkout: "/minhas-compras/checkout/:id"
 }
 
 
