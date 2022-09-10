@@ -20,6 +20,7 @@ interface IProduct {
   features: IProductFeatures[]
   isActive: boolean
   seller: string
+  stocks: number
 }
 
 interface IProductFeatures {
@@ -70,18 +71,18 @@ export const ProductDetails: React.FC<props> = ({ data, isComplete = false, wish
   return (
     <React.Fragment>
       <Row style={{ justifyContent: "space-around" }}>
-        <Col >
+        <Col style={{ marginRight: 30 }}>
           <Card
             hoverable={false}
             style={{
               width: width < 420 ? width - 70 : 380,
-              height: width < 420 ? width : 420
+              height: width < 420 ? width : 420,
             }}
             cover={
               <Image
                 style={{
                   // width: width < 420 ? width - 70 : 380,
-                  height: width < 420 ? width - 70 : 420
+                  height: width < 420 ? width - 70 : 420,
                 }}
                 src={data?.images[0]}
               />
@@ -110,7 +111,7 @@ export const ProductDetails: React.FC<props> = ({ data, isComplete = false, wish
           <Paragraph>{data?.description}</Paragraph>
           <Text strong>Marca: {data?.marc}</Text><br />
           <Text>{+data?.discount > 0 && `Comprando agora você garante um desconto de -R$${data?.discount}`}</Text><br />
-          <Text type="success">x em estoques</Text><br /><br />
+          <Text type="success">{data.stocks} em estoques</Text><br /><br />
           <Text>vendido por <Text strong>{data?.seller}</Text></Text>
           {/* <Title level={3}>dados do vendendor</Title>
           <Text> vendido por {"randonstring"}</Text> */}
