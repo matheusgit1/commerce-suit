@@ -10,7 +10,7 @@ export const NotFound: React.FC = () => {
       <Result
         status="404"
         title="404"
-        subTitle="Págin não enontrada! desculpe"
+        subTitle="Página não encontrada!"
         extra={<Button onClick={() => navigate(paths.home)} type="primary">Voltar ao inicio</Button>}
       />
     </React.Fragment>
