@@ -29,7 +29,8 @@ interface IProduct {
   conditions: string
   features: IProductFeatures[]
   isActive: boolean
-  seller: string
+  seller: string,
+  stocks: number
 }
 
 interface props {
