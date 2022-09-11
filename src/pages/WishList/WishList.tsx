@@ -1,5 +1,14 @@
 import React from 'react'
-import { Row, Pagination, Divider, Typography, Col, message, Result, Button } from 'antd'
+import {
+  Row,
+  Pagination,
+  Divider,
+  Typography,
+  Col,
+  message,
+  Result,
+  Button
+} from 'antd'
 import { useNavigate } from 'react-router-dom'
 import { paths } from '../../mocks/paths'
 import { useAuthContext, useProductContext } from '../../context'
@@ -67,57 +76,62 @@ export const WishList: React.FC<props> = ({ }) => {
 
   return (
     <React.Fragment>
-      <Divider style={{ width: 16 }} orientation="left">
-        <Title style={{ padding: "0px 0px" }}> Sua lista de desejos </Title>
-      </Divider>
-      {
-        userWishListProducts.length === 0 && (
-          <Result
-            status="404"
-            title="404"
-            subTitle="Você não possui nada adicionado a sua lista de desejos"
-            extra={<Button onClick={() => navigate(paths.home)} type="primary">Back Home</Button>}
-          />
-        )
-      }
-      <Row style={{ justifyContent: "space-around" }} >
+
+      <Col >
+        <Divider style={{ width: 16 }} orientation="left">
+          <Title style={{ padding: "0px 0px" }}> Sua lista de desejos </Title>
+        </Divider>
         {
-          userWishListProducts?.map((values, index: number) => (
-            // index > indexPagination[0] && index < indexPagination[1] ? {
-            <Col key={index}>
-              <ProductCards key={index} data={{
-                //@ts-ignore
-                id: values.co_product_id,
-                name: values.co_product_name,
-                price: values.co_product_price,
-                description: values.co_product_description,
-                categories: values.co_product_categories,
-                mainCategories: values.co_product_main_categories,
-                installments: values.co_product_installments,
-                images: values.co_product_images,
-                discount: values.co_product_discount,
-                marc: values.co_product_marc,
-                conditions: values.co_product_discount,
-                features: values.co_product_features,
-                isActive: values.co_is_product_active,
-                seller: values.co_product_seller
-              }} />
-            </Col>
-            // }
-          ))
+          userWishListProducts.length === 0 && (
+            <Result
+              status="404"
+              title="404"
+              subTitle="Você não possui nada adicionado a sua lista de desejos"
+              extra={<Button onClick={() => navigate(paths.home)} type="primary">Back Home</Button>}
+            />
+          )
         }
 
-      </Row>
+        <Row style={{ justifyContent: "space-around" }} >
+          {
+            userWishListProducts?.map((values, index: number) => (
+              // index > indexPagination[0] && index < indexPagination[1] ? {
+              <Col key={index}>
+                <ProductCards
+                  key={index}
+                  data={{
+                    //@ts-ignore
+                    id: values.co_product_id,
+                    name: values.co_product_name,
+                    price: values.co_product_price,
+                    description: values.co_product_description,
+                    categories: values.co_product_categories,
+                    mainCategories: values.co_product_main_categories,
+                    installments: values.co_product_installments,
+                    images: values.co_product_images,
+                    discount: values.co_product_discount,
+                    marc: values.co_product_marc,
+                    conditions: values.co_product_discount,
+                    features: values.co_product_features,
+                    isActive: values.co_is_product_active,
+                    seller: values.co_product_seller
+                  }}
+                />
+              </Col>
+              // }
+            ))
+          }
 
-      {
-        userWishListProducts.length > 0 && (
-          <Row style={{ justifyContent: "space-around", marginTop: 15, marginBottom: 15 }} >
-            <Pagination onChange={(e) => setIndexPagination(e)} defaultCurrent={1} total={1000} />
-            {/* (listProduct?.length || 20) / 20 */}
-          </Row>
-        )
-      }
-
+        </Row>
+        {
+          userWishListProducts.length > 0 && (
+            <Row style={{ justifyContent: "space-around", marginTop: 15, marginBottom: 15 }} >
+              <Pagination onChange={(e) => setIndexPagination(e)} defaultCurrent={1} total={1000} />
+              {/* (listProduct?.length || 20) / 20 */}
+            </Row>
+          )
+        }
+      </Col>
 
     </React.Fragment>
   )
