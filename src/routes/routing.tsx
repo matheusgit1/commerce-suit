@@ -16,10 +16,10 @@ import {
   NotFound,
   MyPurchases,
   WishList,
-  Checkout
+  Checkout,
+  SucefullyPurchase
 } from '../pages'
 import { paths } from '../mocks/paths'
-import { ToastContainer } from 'react-toastify';
 import { Header } from '../components'
 
 export const Routing = () => {
@@ -47,9 +47,9 @@ export const Routing = () => {
           <Route path={paths.myPurchases} element={<MyPurchases />} />
           <Route path={paths.wishList} element={<WishList />} />
           <Route path={paths.checkout} element={<Checkout />} />
+          <Route path={paths.sucefullyPurchase} element={<SucefullyPurchase />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
-        <ToastContainer />
       </Router>
     </React.Fragment>
   );
