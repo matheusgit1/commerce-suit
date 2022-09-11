@@ -21,6 +21,8 @@ const MyPurchases = React.lazy(() => import('../pages/MyPurchases/my-purchases')
 const WishList = React.lazy(() => import('../pages/WishList/wish-list'))
 const Checkout = React.lazy(() => import('../pages/Checkout/Checkout'))
 const SucefullyPurchase = React.lazy(() => import('../pages/SucefullyPurchase/sucefully-purchase'))
+const Notifications = React.lazy(() => import('../pages/Notifications/Notifications'))
+const Questions = React.lazy(() => import('../pages/Questions/Questions'))
 
 export const Routing = () => {
 
@@ -50,6 +52,8 @@ export const Routing = () => {
             <Route path={paths.wishList} element={<WishList />} />
             <Route path={paths.checkout} element={<Checkout />} />
             <Route path={paths.sucefullyPurchase} element={<SucefullyPurchase />} />
+            <Route path={paths.notifications} element={<Notifications />} />
+            <Route path={paths.questions} element={<Questions />} />
             <Route path="*" element={<NotFound />} />
 
           </Routes>
