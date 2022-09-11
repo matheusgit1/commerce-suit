@@ -1,7 +1,28 @@
 import React from "react"
-import { Card, Modal, Row, Typography, Rate, Image, Button, message, Space, Col } from 'antd';
+import {
+  Card,
+  Modal,
+  Row,
+  Typography,
+  Rate,
+  Image,
+  Button,
+  message,
+  Space,
+  Col,
+  Input
+} from 'antd';
 import { useWindowDimensions } from '../../hooks/useWindownDimension'
-import { ShoppingTwoTone, TagTwoTone, ProfileTwoTone } from '@ant-design/icons'
+
+import {
+  ShoppingTwoTone,
+  TagTwoTone,
+  ProfileTwoTone,
+  MinusOutlined,
+  PlusOutlined,
+  UpSquareOutlined
+} from '@ant-design/icons';
+
 import { useProductContext, useAuthContext } from '../../context'
 import ReactImageMagnify from 'react-image-magnify'
 
@@ -45,6 +66,9 @@ export const ProductDetails: React.FC<props> = ({ data, isComplete = false, wish
   const authContext = useAuthContext()
 
   const [fileList, setFileList] = React.useState<string[]>(data.images)
+  const [loadAddCart, setLoadAddCart] = React.useState<boolean>(false)
+  const [quantityInCart, setQuantityInCart] = React.useState<number>(0)
+
 
   const addToWishList = async () => {
     try {
@@ -62,11 +86,55 @@ export const ProductDetails: React.FC<props> = ({ data, isComplete = false, wish
       const response = await productContext.removeFromWishlist(data.id, authContext.user?.access_token || "")
       message.warn("removido da sua lista de desejos!")
       return
-    } catch (error) {
-      message.success("erro ao concluir ação")
+    } catch (error: any) {
+      console.error("erro: ", error)
+      if (Array.isArray(error.response.data.message)) {
+        message.error(error.response.data.message[0])
+        return
+      }
+      if (!Array.isArray(error.response.data.message) || error.response.data.erro) {
+        message.error(error.response.data.message || error.response.data.erro)
+        return
+      }
+      message.error("erro ao concluir ação")
       return
     }
   }
+
+
+  const addToCart = async () => {
+    try {
+      if (quantityInCart <= 0) {
+        message.error("0 itens no seu carrinho")
+        return
+      }
+
+      if (data.stocks < quantityInCart) {
+        message.error("Sem estoques para essa demanda")
+        return
+      }
+
+      setLoadAddCart(true)
+      await productContext.createCart(data.id, quantityInCart, authContext.user?.access_token)
+      productContext.addToCartIds(data.id)
+      message.success("Produto adicionado ao seu carrinho")
+      setLoadAddCart(false)
+    } catch (error: any) {
+      console.error("erro: ", error)
+      setLoadAddCart(false)
+      if (Array.isArray(error.response.data.message)) {
+        message.error(error.response.data.message[0])
+        return
+      }
+      if (!Array.isArray(error.response.data.message) || error.response.data.erro) {
+        message.error(error.response.data.message || error.response.data.erro)
+        return
+      }
+      message.error("erro ao concluir ação")
+      return
+    }
+  }
+
 
   return (
     <React.Fragment>
@@ -117,46 +185,66 @@ export const ProductDetails: React.FC<props> = ({ data, isComplete = false, wish
           <Text> vendido por {"randonstring"}</Text> */}
           {
             wishListButton && (
-              <div>
-                <Space>
-                  <Button
-                    style={{ width: 180, marginTop: 10 }}
-                    danger={productContext.wishList.includes(data.id)}
-                    icon={
-                      <ShoppingTwoTone
-                        twoToneColor={
-                          !productContext.wishList.includes(data.id) ? 'blue' : 'red'}
-                      />
-                    }
-                    key="addToWishList"
-                    onClick={() => !productContext.wishList.includes(data.id) ? addToWishList() : removeFromWishlist()}
-                  >
-                    {!productContext.wishList.includes(data.id) ? 'lista de desejos' : 'remover dos desejos'}
-                  </Button>
+              <div style={{ display: "flex", flexDirection: "column" }}>
+                <Button
+                  style={{ width: 180, marginTop: 10 }}
+                  danger={productContext.wishList.includes(data.id)}
+                  icon={
+                    <ShoppingTwoTone
+                      twoToneColor={
+                        !productContext.wishList.includes(data.id) ? 'blue' : 'red'}
+                    />
+                  }
+                  key="addToWishList"
+                  onClick={() => !productContext.wishList.includes(data.id) ? addToWishList() : removeFromWishlist()}
+                >
+                  {!productContext.wishList.includes(data.id) ? 'lista de desejos' : 'remover dos desejos'}
+                </Button>
 
-                  <Button
-                    style={{ width: 180, marginTop: 10 }}
-                    icon={
-                      <TagTwoTone twoToneColor="blue" />
-                    }
-                    key="purchaseItem"
-                    onClick={() => message.success("comprando")}
-                  >
-                    ir para compra
-                  </Button>
+                <Button
+                  style={{ width: 180, marginTop: 10 }}
+                  icon={
+                    <TagTwoTone twoToneColor="blue" />
+                  }
+                  key="purchaseItem"
+                  onClick={() => message.success("comprando")}
+                >
+                  ir para compra
+                </Button>
 
-                  <Button
-                    style={{ width: 180, marginTop: 10 }}
-                    icon={
-                      <ProfileTwoTone twoToneColor="blue" />
-                    }
-                    key="addTocart"
-                    onClick={() => message.success("comprando")}
-                  >
-                    adicionar ao carrinho
-                  </Button>
-                </Space>
+                <Button
+                  loading={loadAddCart}
+                  style={{ width: 180, marginTop: 10 }}
+                  icon={
+                    <ProfileTwoTone twoToneColor="blue" />
+                  }
+                  key="addTocart"
+                  onClick={() => addToCart()}
+                >
+                  adicionar ao carrinho
+                </Button>
+
+                <Input
+                  style={{ width: 180, marginTop: 10 }}
+                  addonBefore={
+                    <MinusOutlined
+                      disabled={loadAddCart}
+                      onClick={() => setQuantityInCart(quantityInCart > 0 ? quantityInCart - 1 : 0)}
+                    />
+                  }
+                  addonAfter={
+                    <PlusOutlined
+                      disabled={loadAddCart}
+                      style={{ marginRight: 10 }}
+                      onClick={() => setQuantityInCart(quantityInCart + 1)}
+                    />
+                  }
+                  value={quantityInCart}
+                  contentEditable={false}
+
+                />
               </div>
+
             )
           }
         </Col>
