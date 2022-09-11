@@ -146,10 +146,10 @@ export const FormEditAdress: React.FC<props> = ({ data, type }) => {
     } catch (error: any) {
       console.error("erro: ", error)
       setLoading(false)
-      if (error.response.data.erro) {
-        message.error(error.response.data.erro || error.response.data.message)
-        return
-      }
+      // if (error.response.data.erro) {
+      //   message.error(error.response.data.erro || error.response.data.message)
+      //   return
+      // }
       message.error("Erro interno")
       return
     }

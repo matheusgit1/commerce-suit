@@ -61,10 +61,10 @@ export const ListAdressAndSelect: React.FC<props> = ({ buttonAddNewAdress }) => 
     } catch (error: any) {
       console.error("erro: ", error)
       setLoading(false)
-      if (error.response.data.erro) {
-        message.error(error.response.data.erro || error.response.data.message)
-        return
-      }
+      // if (error.response.data.erro) {
+      //   message.error(error.response.data.erro || error.response.data.message)
+      //   return
+      // }
       message.error("Erro interno")
       return
     }
@@ -203,21 +203,23 @@ export const ListAdressAndSelect: React.FC<props> = ({ buttonAddNewAdress }) => 
 
                   }
                   description={<>
-                    <Text type="secondary">
-                      Cidade: {values.city}
-                    </Text><br />
-                    <Text type="secondary">
-                      Número: {values.number}
-                    </Text><br />
-                    <Text type="secondary">
-                      Bairro: {values.district}
-                    </Text><br />
-                    <Text type="secondary">
-                      Quadra: {values.block || "Não definido"}
-                    </Text><br />
-                    <Text type="secondary">
-                      UF: {values.uf}
-                    </Text><br />
+                    <Space>
+                      <Text type="secondary">
+                        Cidade: {values.city}
+                      </Text>
+                      <Text type="secondary">
+                        Número: {values.number}
+                      </Text>
+                      <Text type="secondary">
+                        Bairro: {values.district}
+                      </Text>
+                      <Text type="secondary">
+                        Quadra: {values.block || "Não definido"}
+                      </Text>
+                      <Text type="secondary">
+                        UF: {values.uf}
+                      </Text>
+                    </Space>
                     {/* <Text type="secondary">
                       Id: {values.id}
                     </Text><br /> */}

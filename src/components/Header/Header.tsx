@@ -15,7 +15,8 @@ import {
   EnvironmentOutlined,
   LogoutOutlined,
   LoginOutlined,
-  PlusCircleOutlined
+  PlusCircleOutlined,
+  HomeOutlined
 } from '@ant-design/icons';
 import {
   Menu,
@@ -24,7 +25,7 @@ import {
   Button,
   Badge,
   message,
-  Drawer
+  Row
 } from 'antd';
 import { useAuthContext, useProductContext } from '../../context'
 import { useNavigate } from 'react-router-dom'
@@ -102,7 +103,12 @@ export const Header: React.FC<props> = () => {
 
       <Menu style={{ justifyContent: "flex-end" }} mode={"horizontal"}>
 
-        <Menu.Item onClick={() => setVisible(true)} key="wish list" icon={<EnvironmentOutlined />}>
+        <Menu.Item key="home" icon={<HomeOutlined width={30} />}>
+          <Text >Home</Text>
+        </Menu.Item>
+
+        {/* <Row style={{ display: "flex", flex: 1, justifyContent: "right" }}> */}
+        <Menu.Item onClick={() => setVisible(true)} key="adress" icon={<EnvironmentOutlined />}>
           <Text ellipsis={true}>{authContext.userAdress?.street || "Endereço"}</Text>
         </Menu.Item>
 
@@ -247,7 +253,7 @@ export const Header: React.FC<props> = () => {
 
           </Menu.SubMenu>
         }
-
+        {/* </Row> */}
 
 
       </Menu>

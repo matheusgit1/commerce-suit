@@ -1,5 +1,5 @@
 import React from 'react'
-import { ProductDetails } from '../../components'
+import { ProductDetails, WithoutContent } from '../../components'
 
 import {
   Divider,
@@ -7,19 +7,8 @@ import {
   Typography,
   Col,
   Pagination,
-  Space,
-  Input,
-  Button
 } from 'antd'
 
-import {
-  LockOutlined,
-  UserOutlined,
-  CreditCardOutlined,
-  MinusOutlined,
-  PlusOutlined,
-  UpSquareOutlined
-} from '@ant-design/icons';
 
 import { useProductContext } from '../../context'
 
@@ -32,8 +21,6 @@ import {
   ProductCards,
   ProductFeatures
 } from '../../components'
-
-interface props { }
 
 interface IProduct {
   id: string
@@ -65,14 +52,14 @@ export default function ({ }) {
   const productContext = useProductContext()
   const [productdata, setProductData] = React.useState<IProduct>()
 
-  const [listProduct, setListProduct] = React.useState<Array<any>>([])
+  const [listProduct, setListProduct] = React.useState<Array<any>>()
   const [indexPagination, setIndexPagination] = React.useState<number>(1)
-  const [quantityInCart, setQuantityInCart] = React.useState<number>(0)
 
   //carrega lista de ultimos anuncios (genericos)
   React.useEffect(() => {
     const initialize = async () => {
       const { data } = await productContext.getListProductWithLimit(indexPagination - 1)
+      console.log(data.length)
       setListProduct(data)
       return
     }
@@ -122,7 +109,15 @@ export default function ({ }) {
           <Divider style={{ width: 16 }} orientation="left">
             <Title style={{ margin: 45 }}> Relacionados </Title>
           </Divider>
+
+          {
+            listProduct?.length === 0 && (
+              <WithoutContent />
+            )
+          }
+
           <Row style={{ justifyContent: "space-around" }} >
+
             {
               listProduct?.map((values, index) => (
                 <Col key={index}>

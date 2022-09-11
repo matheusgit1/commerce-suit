@@ -3,10 +3,27 @@ import React from "react";
 import banner from '../../assets/banners/banner.jpg'
 import banner2 from '../../assets/banners/banner2.webp'
 import banner3 from '../../assets/banners/banner3.webp'
-import { EngineDetails, ProductCards } from '../../components'
+import { EngineDetails, ProductCards, WithoutContent } from '../../components'
 import { useProductContext } from '../../context'
-import { Carousel, Col, Divider, Row, Typography, Card, Modal, Pagination, message } from 'antd';
-import { LockOutlined, CreditCardOutlined, PlusCircleOutlined, FieldTimeOutlined } from '@ant-design/icons';
+import {
+  Carousel,
+  Col,
+  Divider,
+  Row,
+  Typography,
+  Card,
+  Modal,
+  Pagination,
+  message,
+  Result,
+
+} from 'antd';
+import {
+  LockOutlined,
+  CreditCardOutlined,
+  PlusCircleOutlined,
+  FieldTimeOutlined
+} from '@ant-design/icons';
 import ItemsCarousel from 'react-items-carousel';
 // import MultiCarousel from "react-multi-carousel";
 import { BsFillArrowLeftCircleFill, BsFillArrowRightCircleFill } from 'react-icons/bs'
@@ -113,6 +130,11 @@ export default function Home({ }: props) {
         <Title style={{ padding: "0px 0px" }}> Ultimos anúncios </Title>
       </Divider>
       <Row style={{ justifyContent: "space-around" }} >
+        {
+          listProduct.length === 0 && (
+            <WithoutContent />
+          )
+        }
         {
           listProduct?.map((values, index) => (
             // index > indexPagination[0] && index < indexPagination[1] ? {
