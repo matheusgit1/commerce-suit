@@ -1,6 +1,17 @@
 import { HttpClient, BasePaths } from '../../api'
 import { AxiosRequestHeaders } from 'axios'
 
+export interface ICreatePurchase{
+  productId: string
+  installments: number
+  amount: number
+  adressId: string
+  creditCard: string
+  mouth: number
+  expYear: number
+  cvc: number
+}
+
 export class PurchaseApi {
   public httpClient: HttpClient
 
@@ -45,6 +56,21 @@ export class PurchaseApi {
 
   public async getUserWishlistInDetails(token: string, pagination: number){
     const response = await this.httpClient.execute.get(`/wishlist/details/${pagination}`, {headers:{"Authorization": `Bearer ${token}`}})
+    return response
+  }
+
+  public async createPurchase(body: ICreatePurchase, token?: string){
+    const response = await this.httpClient.execute.post(`/insert`, body, {headers:{"Authorization": `Bearer ${token}`}})
+    return response
+  }
+
+  public async updateCart(productId: string, newQuantie: number, token?: string){
+    const response = await this.httpClient.execute.patch(`/cart/patch`, { productId: productId, quantity: newQuantie}, {headers:{"Authorization": `Bearer ${token}`}})
+    return response
+  }
+
+  public async createCart(productId: string, quantity: number, token?: string){
+    const response = await this.httpClient.execute.post(`/cart/insert`, { productId: productId, quantity: quantity}, {headers:{"Authorization": `Bearer ${token}`}})
     return response
   }
 }

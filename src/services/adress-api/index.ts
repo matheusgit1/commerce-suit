@@ -51,7 +51,7 @@ export class AdressApi {
     this.httpClient = new HttpClient(new BasePaths().getBaseurlOfAdressApi())
   }
 
-  public async listUserAdress(token: string){
+  public async listUserAdress(token?: string){
     const response = await this.httpClient.execute.get('/list',{headers:{"Authorization": `Bearer ${token}`}})
     return response
   }
@@ -66,8 +66,8 @@ export class AdressApi {
     return response
   }
 
-  public async registerANewAdressOfUser(body: IRegisterAdressFormat, headers?:AxiosRequestHeaders){
-    const response = await this.httpClient.execute.post('/create', body, {headers: headers || {}})
+  public async registerANewAdressOfUser(body: IRegisterAdressFormat, token?: string){
+    const response = await this.httpClient.execute.post('/create', body, {headers:{"Authorization": `Bearer ${token}`}})
     return response
   }
 
