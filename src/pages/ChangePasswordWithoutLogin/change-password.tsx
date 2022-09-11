@@ -1,10 +1,10 @@
 import React from 'react'
+import { message } from 'antd'
 import { Container, Title } from './change-password.styles'
 import { Form } from '../../components'
 import { useNavigate } from 'react-router-dom'
 import { paths } from '../../mocks/paths'
 import { useAuthContext } from '../../context'
-import { toast } from 'react-toastify';
 import { useLocation, useParams } from 'react-router-dom';
 
 interface props { }
@@ -35,15 +35,15 @@ export const ChangePasswordWithoutLogin: React.FC<props> = ({ }) => {
     try {
       //@ts-ignore
       const { data } = await AuthContext.changePasswordWithoutLogin({ email: email, password: password, confirmPassword: confirmPassword, token: params.token })
-      toast.success(data.mensagem)
+      message.success(data.mensagem)
       navigate(paths.login)
       return;
     } catch (error: any) {
       if (error.response.data.erro) {
-        toast.error(error.response.data.erro)
+        message.error(error.response.data.erro)
         return
       }
-      toast.error("Erro interno")
+      message.error("Erro interno")
       return
     }
   }
