@@ -59,7 +59,7 @@ interface IProductFeatures {
   }
 }
 
-export const ProductById: React.FC<props> = ({ }) => {
+export default function ({ }) {
   const params = useParams()
   const location = useLocation()
   const productContext = useProductContext()

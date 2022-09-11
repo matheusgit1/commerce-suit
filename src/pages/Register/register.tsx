@@ -10,7 +10,7 @@ import { useAuthContext } from '../../context'
 
 interface props { }
 
-export const Register: React.FC<props> = ({ }) => {
+export default function ({ }) {
   const AuthContext = useAuthContext()
   const navigate = useNavigate()
 

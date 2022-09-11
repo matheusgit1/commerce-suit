@@ -3,7 +3,7 @@ import { Button, Result } from 'antd';
 import { useNavigate } from 'react-router-dom'
 import { paths } from '../../mocks/paths'
 
-export const NotFound: React.FC = () => {
+export default function ({ }) {
   const navigate = useNavigate()
   return (
     <React.Fragment>

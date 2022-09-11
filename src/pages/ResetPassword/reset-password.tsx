@@ -9,7 +9,7 @@ import { useLocation, } from 'react-router-dom';
 
 interface props { }
 
-export const ResetPassword: React.FC<props> = ({ }) => {
+export default function ResetPassword({ }) {
   const navigate = useNavigate()
   const AuthContext = useAuthContext()
 

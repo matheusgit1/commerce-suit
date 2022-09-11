@@ -11,7 +11,7 @@ import { paths } from '../../mocks/paths'
 
 interface props { }
 
-export const SucefullyPurchase: React.FC<props> = ({ }) => {
+export default function SucefullyPurchase({ }) {
 
   const params = useParams()
   const location = useLocation()

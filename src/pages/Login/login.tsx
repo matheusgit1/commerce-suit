@@ -10,7 +10,7 @@ import { useLocation } from 'react-router-dom';
 
 interface props { }
 
-export const Login: React.FC<props> = ({ }) => {
+export default function Login({ }) {
 
   const AuthContext = useAuthContext()
 

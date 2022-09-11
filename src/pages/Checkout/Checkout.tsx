@@ -98,7 +98,7 @@ interface IUseProductCheckout {
 
 interface props { }
 
-export const Checkout: React.FC<props> = ({ }) => {
+export default function Checkout({ }) {
 
   const params = useParams()
   const location = useLocation()

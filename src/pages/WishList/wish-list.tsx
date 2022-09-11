@@ -50,7 +50,7 @@ interface IUseWishList {
   co_product_id?: string
 }
 
-export const WishList: React.FC<props> = ({ }) => {
+export default function WishList({ }) {
   const navigate = useNavigate()
   const authContext = useAuthContext()
   const productContext = useProductContext()

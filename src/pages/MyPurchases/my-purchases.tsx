@@ -68,7 +68,7 @@ interface IPurchaseList {
   co_quantity?: number
 }
 
-export const MyPurchases: React.FC<props> = ({ }) => {
+export default function MyPurchases({ }) {
   const navigate = useNavigate()
   const authContext = useAuthContext()
   const productContext = useProductContext()

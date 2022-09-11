@@ -9,7 +9,7 @@ import { useLocation, useParams } from 'react-router-dom';
 
 interface props { }
 
-export const ChangePasswordWithoutLogin: React.FC<props> = ({ }) => {
+export default ChangePasswordWithoutLogin({}){
 
   const AuthContext = useAuthContext()
   const navigate = useNavigate()

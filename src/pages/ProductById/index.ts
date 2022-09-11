@@ -1,1 +1,1 @@
-export * from './ProductById'
+export * from './Product-by-id'

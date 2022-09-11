@@ -14,7 +14,7 @@ import { useWindowDimensions } from '../../hooks/useWindownDimension'
 
 interface props { }
 
-export const Home: React.FC<props> = ({ }) => {
+export default function Home({ }: props) {
 
   const productContext = useProductContext()
 

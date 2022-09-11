@@ -1,1 +1,1 @@
-export * from './WishList'
+export * from './wish-list'

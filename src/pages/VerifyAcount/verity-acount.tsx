@@ -11,7 +11,7 @@ import { useAuthContext } from '../../context'
 
 interface props { }
 
-export const VerifyAcount: React.FC<props> = ({ }) => {
+export default function VerifyAcount({ }) {
 
   const location = useLocation()
   const AuthContext = useAuthContext()
