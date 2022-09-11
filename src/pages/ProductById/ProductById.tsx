@@ -84,8 +84,6 @@ export const ProductById: React.FC<props> = ({ }) => {
   React.useEffect(() => {
     const initialize = async () => {
       //@ts-ignore
-      console.log(location.state?.data)
-      //@ts-ignore
       if (!location.state?.data) {
         //@ts-ignore
         const { data } = await productContext.getProductById(params?.id)

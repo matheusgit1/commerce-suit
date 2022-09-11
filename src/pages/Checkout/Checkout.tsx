@@ -150,16 +150,12 @@ export const Checkout: React.FC<props> = ({ }) => {
       if (!params.id) {
         navigate(paths.home)
       }
-      //@ts-ignore
-      console.log(location.state.data)
     }
     initialize()
   }, [])
 
   const onFinish = async (values: any) => {
     try {
-      console.log('Finish:', values);
-      console.log(authContext.user?.access_token)
       setFinishLoading(true)
       const response = await productContext.createPurchase({
         productId: productdata?.co_product_id,
@@ -172,7 +168,6 @@ export const Checkout: React.FC<props> = ({ }) => {
         cvc: +values.cvc
       }, authContext.user?.access_token)
 
-      console.log(response.data)
       message.success("Compra efetivada com sucesso")
       productContext.removeIdFromCartIds(productdata.co_product_id)
       setFinishLoading(false)
@@ -493,7 +488,7 @@ export const Checkout: React.FC<props> = ({ }) => {
 
   return (
     <React.Fragment>
-      <Tabs onTabClick={(e: any) => setActiveTab(e)} activeKey={activeTab} draggable centered onTabScroll={() => console.log("drag")}>
+      <Tabs onTabClick={(e: any) => setActiveTab(e)} activeKey={activeTab} draggable centered>
         {
           checkoutTabItems.map((values, index) => (
             <Tabs.TabPane key={values.key} tab={values.label}>

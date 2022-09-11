@@ -99,7 +99,6 @@ export const FormEditAdress: React.FC<props> = ({ data, type }) => {
   const createAdress = async () => {
 
     try {
-      console.log(authContext.user?.access_token)
       const response = await authContext.registerANewAdressOfUser({
         city: city,
         street: street,
@@ -114,7 +113,6 @@ export const FormEditAdress: React.FC<props> = ({ data, type }) => {
       message.success("Endereço criado")
       return
     } catch (error: any) {
-      console.log(error)
       message.error("erro ao criar endereço")
       return
     }

@@ -64,9 +64,7 @@ export const WishList: React.FC<props> = ({ }) => {
       try {
         if (productContext.wishList.length === 0) return;
         const { data } = await productContext.getUserWishlistInDetails(authContext.user?.access_token || "", pagination)
-        // console.log(data)
         setUserWishListProduct(data)
-        // console.log(productContext.wishList)
       } catch (error: any) {
         message.error("Erro ao recupera sua lisa de desejos")
       }
@@ -85,9 +83,9 @@ export const WishList: React.FC<props> = ({ }) => {
           userWishListProducts.length === 0 && (
             <Result
               status="404"
-              title="404"
+              title="Lista de desejo vazia"
               subTitle="Você não possui nada adicionado a sua lista de desejos"
-              extra={<Button onClick={() => navigate(paths.home)} type="primary">Back Home</Button>}
+              extra={<Button onClick={() => navigate(paths.home)} type="primary">Voltar para o </Button>}
             />
           )
         }

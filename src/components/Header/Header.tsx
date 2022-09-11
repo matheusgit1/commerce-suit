@@ -53,8 +53,7 @@ export const Header: React.FC<props> = () => {
 
   //elations with product context
   React.useEffect(() => {
-    console.log(productContext.cartIds, productContext.cartIds.length)
-    setNumberInBadge(productContext.cartIds.length)
+
   }, [productContext.cartIds])
 
 

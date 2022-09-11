@@ -45,15 +45,7 @@ export const ListAdressAndSelect: React.FC<props> = ({ buttonAddNewAdress }) => 
   React.useEffect(() => {
     //list adress
     const initialize = async () => {
-      // try {
-      //   console.log(authContext.user?.access_token)
-      //   const { data } = await authContext.listUserAdress("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InBlcmVpcmEubWF0aGV1c2FsdmVzQGdtYWlsLmNvbSIsInVzZXJuYW1lIjoiTWF0aGV1cyIsImlkIjoiOTU4MDVjZmUtOGJhYi00ZTMwLWE3ZmYtNDI2MDA4MzVjYzM0IiwiaWF0IjoxNjYyODQxODk2LCJleHAiOjE2NjM0NDY2OTZ9.BBTwVZ2MAAtt9VHSSSYWxXZP_SsEkKkB2Y6n71fE1wU")
-      //   authContext.createUserAdress(data)
-      //   console.log(data)
-      // } catch (error: any) {
-      //   message.error("erro ao listar seus endereços")
-      //   console.log(error)
-      // }
+
     }
     initialize()
   }, [authContext.userListAdress, authContext.userAdress])

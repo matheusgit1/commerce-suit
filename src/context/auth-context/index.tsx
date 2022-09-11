@@ -86,9 +86,7 @@ export function AuthContextProvider(props: AuthContextProvidersProps) {
   React.useEffect(() => {
     const initialize = async () => {
       if (!user) return
-      console.log(user?.access_token)
       const res = await listUserAdress(user.access_token)
-      console.log("endereços: ", res.data)
       setUserListAdress(res.data)
       return
     }

@@ -49,7 +49,7 @@ export const ProductCards: React.FC<props> = ({ data, wishListButton }) => {
   const [isModalVisible, setIsModalVisible] = React.useState<boolean>(false)
 
   React.useEffect(() => {
-    // console.log(productContext.wishList)
+
   }, [productContext.wishList])
 
   const addToWishList = async () => {

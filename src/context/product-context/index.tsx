@@ -74,7 +74,6 @@ export function ProductContextProvider(props: ProductContextProvidersProps) {
       if (!authContext.user) return
       try {
         const { data } = await purchaseApi.getUserCart(authContext.user?.access_token || "")
-        // console.log(data)
         for (const index in data) {
           setCartIds(oldArray => [...oldArray, data[index]?.co_product_id])
         }

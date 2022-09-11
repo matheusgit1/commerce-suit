@@ -88,9 +88,7 @@ export const MyPurchases: React.FC<props> = ({ }) => {
   React.useEffect(() => {
     const initialize = async () => {
       try {
-        // console.log(authContext.user)
         const { data } = await productContext.getUserCartInDetails(authContext.user?.access_token || "", pagination)
-        // console.log(data)
         setPurchaseList(data)
       } catch (error: any) {
         // message.error("Erro ao listar seu carrinho de compras")
@@ -131,7 +129,7 @@ export const MyPurchases: React.FC<props> = ({ }) => {
         purchaseList?.length === 0 && (
           <Result
             status="404"
-            title="404"
+            title="Carrinho vazio"
             subTitle="Você não possui nada ainda em seu carrinho de compras."
             extra={<Button onClick={() => navigate(paths.home)} type="primary">Ir para o inico</Button>}
           />
