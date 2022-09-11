@@ -1,11 +1,11 @@
 import React from 'react'
+import { message } from 'antd'
 import { Container, Title } from './register.styles'
 import { Form } from '../../components'
 import { paths } from '../../mocks/paths'
 import { useNavigate } from 'react-router-dom'
 import { AuthApi } from '../../services/auth-api'
 import { useAuthContext } from '../../context'
-import { toast } from 'react-toastify';
 
 
 interface props { }
@@ -31,18 +31,18 @@ export const Register: React.FC<props> = ({ }) => {
     event.preventDefault()
     try {
       if (password !== password) {
-        toast.error("Senhas devem combinar")
+        message.error("Senhas devem combinar")
       }
       const response = await AuthContext.register({ email, password, confirmPassword, name, document, phone })
-      toast.success(response.data.mensagem)
+      message.success(response.data.mensagem)
       navigate(paths.verifyAcount, { state: { email: email } })
       return;
     } catch (error: any) {
       if (error.response.data.erro) {
-        toast.error(error.response.data.erro)
+        message.error(error.response.data.erro)
         return
       }
-      toast.error("Erro interno")
+      message.error("Erro interno")
       return
     }
 
