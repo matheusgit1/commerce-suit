@@ -10,7 +10,9 @@ export const paths = {
   myPurchases: "/minhas-compras",
   wishList: "/minha-lista-de-desejos",
   checkout: "/minhas-compras/checkout/:id",
-  sucefullyPurchase: "/minhas-compras/checkout/:id/finalizado"
+  sucefullyPurchase: "/minhas-compras/checkout/:id/finalizado",
+  notifications: "/notificacao",
+  questions: "/perguntas"
 }
 
 
