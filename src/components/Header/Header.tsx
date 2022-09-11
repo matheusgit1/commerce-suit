@@ -147,7 +147,7 @@ export const Header: React.FC<props> = () => {
               style={{ display: "flex", flex: 1, justifyContent: "center", alignItems: "center" }}
               key="15-questions"
             >
-              <Button onClick={() => message.success("indo para todas as perguntas")} type="primary">Ir para todas</Button>
+              <Button onClick={() => navigate(paths.questions)} type="primary">Ir para todas</Button>
             </Menu.Item>
           </React.Fragment>
         </Menu.SubMenu>
@@ -180,7 +180,7 @@ export const Header: React.FC<props> = () => {
               style={{ display: "flex", flex: 1, justifyContent: "center", alignItems: "center" }}
               key="15-Notificações"
             >
-              <Button onClick={() => message.success("indo para todas as notificações")} type="primary">Ir para todas</Button>
+              <Button onClick={() => navigate(paths.notifications)} type="primary">Ir para todas</Button>
             </Menu.Item>
           </React.Fragment>
         </Menu.SubMenu>
