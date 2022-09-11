@@ -1,4 +1,5 @@
 import React from 'react';
+import { message } from 'antd'
 import {
   AuthApi,
   ILogin,
@@ -15,8 +16,6 @@ import {
 } from '../../services'
 import { AxiosRequestHeaders, AxiosPromise } from 'axios'
 import { } from 'react-router-dom'
-import { toast } from 'react-toastify'
-
 
 export type user = {
   id: string
@@ -45,7 +44,9 @@ export type AuthContextType = {
   updateUserAdress: (body: IUpdateAdressFormat, headers?: AxiosRequestHeaders) => AxiosPromise
   deleteUserAdress: (body: IDeleteAdressFormat, headers?: AxiosRequestHeaders) => AxiosPromise
   removeAdressFromList: (adressId: string) => void
-  registerANewAdressOfUser: (body: IRegisterAdressFormat, headers?: AxiosRequestHeaders) => AxiosPromise
+  registerANewAdressOfUser: (body: IRegisterAdressFormat, token?: string) => AxiosPromise
+  listUserAdress: (token?: string) => AxiosPromise
+  createNewUserListAdress: (body: any) => void
 }
 
 export type AuthContextProvidersProps = {
@@ -71,7 +72,12 @@ export function AuthContextProvider(props: AuthContextProvidersProps) {
       if (lv_user) {
         const lv_user_parsed = JSON.parse(lv_user)
         setUser(lv_user_parsed)
-        return
+      }
+
+      const lv_adress = localStorage.getItem(ADRESS_IN_LOCAL_STORAGE)
+      if (lv_adress) {
+        const lv_adress_parsed = JSON.parse(lv_adress)
+        setUserAdress(lv_adress_parsed)
       }
     }
     initialize()
@@ -79,23 +85,19 @@ export function AuthContextProvider(props: AuthContextProvidersProps) {
 
   React.useEffect(() => {
     const initialize = async () => {
-
-      const lv_adress = localStorage.getItem(ADRESS_IN_LOCAL_STORAGE)
-      if (lv_adress) {
-        const lv_adress_parsed = JSON.parse(lv_adress)
-        setUserAdress(lv_adress_parsed)
-      }
-
-      if (user) {
-        const res = await listUserAdress()
-        setUserListAdress(res.data)
-      }
-
+      if (!user) return
+      console.log(user?.access_token)
+      const res = await listUserAdress(user.access_token)
+      console.log("endereços: ", res.data)
+      setUserListAdress(res.data)
       return
     }
     initialize()
   }, [user])
 
+  const createNewUserListAdress = (body: any) => {
+    setUserListAdress(body)
+  }
 
   const createUser = (data: user) => {
     localStorage.setItem(USER_IN_LOCAL_STORAGE, JSON.stringify(data))
@@ -108,23 +110,23 @@ export function AuthContextProvider(props: AuthContextProvidersProps) {
     return
   }
 
-  const registerANewAdressOfUser = async (body: IRegisterAdressFormat, headers?: AxiosRequestHeaders) => {
-    const response = await adressApi.registerANewAdressOfUser(body, headers)
+  const registerANewAdressOfUser = async (body: IRegisterAdressFormat, token?: string) => {
+    const response = await adressApi.registerANewAdressOfUser(body, token)
     if (response.status === 200 || response.status === 201) {
       setUserListAdress(oldArray => [...oldArray, response.data]);
     }
     return response
   }
 
-  const listUserAdress = async () => {
-    const response = await adressApi.listUserAdress(user?.access_token || "")
+  const listUserAdress = async (token?: string) => {
+    const response = await adressApi.listUserAdress(token)
     return response
   }
 
   const removeAdressFromList = async (adressId: string) => {
     userListAdress.map((values, index) => {
       if (values.id === adressId) {
-        setUserListAdress([...userListAdress?.slice(index, 1)])
+        setUserListAdress([...userListAdress.splice(index, 1)])
         return
       }
     })
@@ -152,7 +154,7 @@ export function AuthContextProvider(props: AuthContextProvidersProps) {
     localStorage.removeItem(USER_IN_LOCAL_STORAGE)
     localStorage.removeItem(ADRESS_IN_LOCAL_STORAGE)
     setUser(undefined)
-    toast.success("LOGOUT")
+    message.success("LOGOUT")
     return
   }
 
@@ -203,7 +205,9 @@ export function AuthContextProvider(props: AuthContextProvidersProps) {
       updateUserAdress,
       deleteUserAdress,
       removeAdressFromList,
-      registerANewAdressOfUser
+      registerANewAdressOfUser,
+      listUserAdress,
+      createNewUserListAdress
     }}
     >
       {props.children}

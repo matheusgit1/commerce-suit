@@ -2,9 +2,9 @@ import React from 'react';
 import { message } from 'antd'
 import { AxiosRequestHeaders, AxiosPromise } from 'axios'
 import { IFilter } from '../../services'
-import { toast } from 'react-toastify'
-import { ProductApi, PurchaseApi } from '../../services'
+import { ProductApi, PurchaseApi, ICreatePurchase } from '../../services'
 import { useAuthContext } from '../auth-context/useAuthContext'
+
 
 export type ProductContextType = {
   // user: user | undefined,
@@ -12,14 +12,18 @@ export type ProductContextType = {
   getListProductByCategory: (filter: IFilter) => AxiosPromise
   addToWishList: (productId: string, token: string) => AxiosPromise
   removeFromWishlist: (productId: string, token: string) => AxiosPromise
+  addToCartIds: (productId: string) => void
   getProductById: (productId: string) => AxiosPromise
   addProductIntoCart: (productId: string, token: string) => AxiosPromise
   getUserCartInDetails: (token: string, pagination: number) => AxiosPromise
   removeFromCart: (token: string, productId: string) => AxiosPromise
   removeIdFromCartIds: (productId: string) => void
   getUserWishlistInDetails: (token: string, pagination: number) => AxiosPromise
+  createPurchase: (body: ICreatePurchase, token?: string) => AxiosPromise
+  updateCart: (productId: string, newQuantie: number, token?: string) => AxiosPromise
+  createCart: (productId: string, quantity: number, token?: string) => AxiosPromise
   wishList: string[]
-  cartIds: IUserCart[]
+  cartIds: string[]
 }
 
 export type ProductContextProvidersProps = {
@@ -45,7 +49,7 @@ export function ProductContextProvider(props: ProductContextProvidersProps) {
   const authContext = useAuthContext()
 
   const [wishList, setWishList] = React.useState<string[]>([])
-  const [cartIds, setCartIds] = React.useState<IUserCart[]>([])
+  const [cartIds, setCartIds] = React.useState<string[]>([])
 
   //get all in wish list
   React.useEffect(() => {
@@ -82,7 +86,11 @@ export function ProductContextProvider(props: ProductContextProvidersProps) {
   }, [authContext.user])
 
   const removeIdFromCartIds = (productId: string) => {
-    setCartIds(cartIds.filter(item => item.co_product_id !== productId))
+    setCartIds(cartIds.filter(values => values != productId))
+  }
+
+  const addToCartIds = (productId: string) => {
+    setCartIds(oldArray => [...oldArray, productId])
   }
 
   const getListProductWithLimit = async (limit: number) => {
@@ -132,6 +140,20 @@ export function ProductContextProvider(props: ProductContextProvidersProps) {
     return response
   }
 
+  const createPurchase = async (body: ICreatePurchase, token?: string) => {
+    const response = await purchaseApi.createPurchase(body, token)
+    return response
+  }
+
+  const updateCart = async (productId: string, newQuantie: number, token?: string) => {
+    const response = await purchaseApi.updateCart(productId, newQuantie, token)
+    return response
+  }
+
+  const createCart = async (productId: string, quantity: number, token?: string) => {
+    const response = await purchaseApi.createCart(productId, quantity, token)
+    return response
+  }
 
   return (
     <ProductContext.Provider
@@ -139,6 +161,7 @@ export function ProductContextProvider(props: ProductContextProvidersProps) {
         getListProductWithLimit,
         addToWishList,
         removeFromWishlist,
+        addToCartIds,
         getListProductByCategory,
         getProductById,
         addProductIntoCart,
@@ -146,6 +169,9 @@ export function ProductContextProvider(props: ProductContextProvidersProps) {
         removeFromCart,
         removeIdFromCartIds,
         getUserWishlistInDetails,
+        createPurchase,
+        updateCart,
+        createCart,
         wishList,
         cartIds
       }}
