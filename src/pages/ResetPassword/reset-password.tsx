@@ -1,10 +1,10 @@
 import React from 'react'
+import { message } from 'antd'
 import { Container, Title } from './reset-password.styles'
 import { Form } from '../../components'
 import { useNavigate } from 'react-router-dom'
 import { paths } from '../../mocks/paths'
 import { useAuthContext } from '../../context'
-import { toast } from 'react-toastify';
 import { useLocation, } from 'react-router-dom';
 
 interface props { }
@@ -34,14 +34,14 @@ export const ResetPassword: React.FC<props> = ({ }) => {
     event.preventDefault()
     try {
       const response = await AuthContext.resetPassword({ email: email })
-      toast.success(response.data.mensagem)
+      message.success(response.data.mensagem)
       return;
     } catch (error: any) {
       if (error.response.data.erro) {
-        toast.error(error.response.data.erro)
+        message.error(error.response.data.erro)
         return
       }
-      toast.error("Erro interno")
+      message.error("Erro interno")
       return
     }
 
