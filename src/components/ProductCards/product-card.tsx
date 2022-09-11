@@ -2,7 +2,7 @@ import React from 'react';
 import { HiTag } from 'react-icons/hi'
 import { useProductContext, useAuthContext } from '../../context'
 import { useWindowDimensions } from '../../hooks/useWindownDimension'
-import { Card, Modal, Button, message } from 'antd';
+import { Card, Modal, Button, message, Tooltip } from 'antd';
 import { ShoppingTwoTone, HeartTwoTone } from '@ant-design/icons'
 import { ProductDetails } from '..'
 import { useNavigate } from 'react-router-dom'
@@ -136,13 +136,16 @@ export const ProductCards: React.FC<props> = ({ data, wishListButton }) => {
         style={{ width: 240, marginBottom: 30 }}
         cover={<img onClick={() => setIsModalVisible(true)} style={{ height: 300, width: "100%" }} alt="example" src={data.images[0] ? data.images[0] : 'https://t4.ftcdn.net/jpg/04/99/93/31/360_F_499933117_ZAUBfv3P1HEOsZDrnkbNCt4jc3AodArl.jpg'} />}
         actions={[
-          <HeartTwoTone
-            twoToneColor={productContext.wishList.includes(data.id) ? 'red' : 'blue'}
-            onClick={() => !productContext.wishList.includes(data.id) ? addToWishList() : removeFromWishlist()}
-            style={{
-              fontSize: 20
-            }}
-            label="lista de desejos" />
+          <Tooltip placement="top" title={productContext.wishList.includes(data.id) ? "clique para remover da lista de desejos" : "Clique para adicionar a lista de desejos"}>
+            <HeartTwoTone
+              twoToneColor={productContext.wishList.includes(data.id) ? 'red' : 'blue'}
+              onClick={() => !productContext.wishList.includes(data.id) ? addToWishList() : removeFromWishlist()}
+              style={{
+                fontSize: 20
+              }}
+              label="lista de desejos"
+            />
+          </Tooltip>,
         ]}
       >
         <div onClick={() => setIsModalVisible(true)}>
