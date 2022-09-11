@@ -1,11 +1,10 @@
 import React from 'react'
 import { InfoCircleOutlined } from '@ant-design/icons';
-import { Button, Form, Input, Row, Select } from 'antd';
+import { Button, Form, Input, message, Row, Select } from 'antd';
 import {
   IAdressFormat
 } from '../../services'
 import { useAuthContext } from '../../context'
-import { toast } from 'react-toastify'
 
 type RequiredMark = boolean | 'optional';
 export type TAdressForm = "edit" | "create"
@@ -95,11 +94,12 @@ export const FormEditAdress: React.FC<props> = ({ data, type }) => {
 
     }
     initialize()
-  }, [data?.id])
+  }, [data])
 
   const createAdress = async () => {
 
     try {
+      console.log(authContext.user?.access_token)
       const response = await authContext.registerANewAdressOfUser({
         city: city,
         street: street,
@@ -110,11 +110,12 @@ export const FormEditAdress: React.FC<props> = ({ data, type }) => {
         state: state,
         uf: uf,
         reference: reference,
-      }, { 'Authorization': `Bearer ${authContext.user?.access_token}` })
-      toast.success("Endereço criado")
+      }, authContext.user?.access_token)
+      message.success("Endereço criado")
       return
     } catch (error: any) {
-      toast.error("Criando...")
+      console.log(error)
+      message.error("erro ao criar endereço")
       return
     }
   }
@@ -141,17 +142,17 @@ export const FormEditAdress: React.FC<props> = ({ data, type }) => {
           values = data
         }
       })
-      toast.success("Endereço atualizado com sucesso")
+      message.success("Endereço atualizado com sucesso")
 
       setLoading(false)
     } catch (error: any) {
       console.error("erro: ", error)
       setLoading(false)
       if (error.response.data.erro) {
-        toast.error(error.response.data.erro || error.response.data.message)
+        message.error(error.response.data.erro || error.response.data.message)
         return
       }
-      toast.error("Erro interno")
+      message.error("Erro interno")
       return
     }
   };
