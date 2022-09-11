@@ -12,7 +12,7 @@ import {
   Result,
   Row,
   Pagination,
-  Divider
+  Divider,
 } from 'antd'
 import {
   EditOutlined,
@@ -24,7 +24,6 @@ import { useWindowDimensions } from '../../hooks/useWindownDimension'
 import { BsTruck } from 'react-icons/bs'
 import { } from 'react-icons/bs'
 import { useAuthContext, useProductContext } from '../../context'
-import { toast } from 'react-toastify'
 import { FormEditAdress, TAdressForm } from '../../components'
 import {
   IAdressFormat
@@ -82,9 +81,10 @@ export const MyPurchases: React.FC<props> = ({ }) => {
   const [loading, setLoading] = React.useState<boolean>(false)
   const [pagination, setPagination] = React.useState<number>(0)
   const [purchaseList, setPurchaseList] = React.useState<IPurchaseList[]>([])
-  const [excluded, setExcludeds] = React.useState<string[]>([])
+  // const [excluded, setExcludeds] = React.useState<string[]>([])
 
 
+  //when a pagination be altered this function s calles
   React.useEffect(() => {
     const initialize = async () => {
       try {
@@ -100,26 +100,20 @@ export const MyPurchases: React.FC<props> = ({ }) => {
   }, [pagination])
 
 
-  React.useEffect(() => {
-    const initialize = async () => {
-      if (purchaseList.length === 0) return;
-    }
-    initialize()
-  }, [purchaseList])
+  // React.useEffect(() => {
+  //   const initialize = async () => {
+  //     if (purchaseList.length === 0) return;
+  //   }
+  //   initialize()
+  // }, [purchaseList, productContext.cartIds])
 
   const removeFromCart = async (productName: string, productId: string) => {
     try {
       const { data } = await productContext.removeFromCart(authContext.user?.access_token || "", productId)
-      //reomove id no contexto global
+      //reomove id from global context
       productContext.removeIdFromCartIds(productId)
-      //remove id no contexto local
-      purchaseList.map((values, index) => {
-        if (values.co_product_id === productId) {
-          setPurchaseList([...purchaseList?.slice(index, 1)])
-          return
-        }
-      })
-      setExcludeds(oldArray => [...oldArray, productId])
+      //remove id in local context
+      setPurchaseList(purchaseList.filter(values => values.co_product_id != productId))
       message.warn(`${productName} Removido de seu carrinho`)
 
     } catch (error: any) {
@@ -149,44 +143,41 @@ export const MyPurchases: React.FC<props> = ({ }) => {
 
             <Row key={index} style={{ display: "flex", flex: 1, justifyContent: "center", alignItems: "center" }}>
               <Card
-                onClick={() => width < 400 ? message.warn("ir para compra") : null}
+                // onClick={() => width < 400 ? navigate(`/minhas-compras/checkout/${values?.co_product_id}`, { state: { data: values } }) : null}
                 style={{ width: width > 700 ? 700 : width, marginTop: 8, boxShadow: 'rgba(100, 100, 111, 0.2) 0px 7px 29px 0px' }}
                 hoverable
                 key={`card-${index}`}
                 loading={false}
                 actions={[
-                  <Col>
-                    {
-                      width > 400 && (
-                        <Button
-                          onClick={() => {
-                            if (excluded.includes(values.co_product_id)) {
-                              message.warn("Vôce removeu esse item do seu carrinho")
-                              return;
-                            }
-                            navigate(`/minhas-compras/checkout/${values.co_product_id}`, { state: { data: values } })
-                          }
-                          }
-                          style={{
-                            color: 'white',
-                            background: '#8fce00'
-                          }}
-                          type="default"
-                          icon={<CheckOutlined />}
-                        >
-                          Finalizar compra
-                        </Button>
-                      )
-                    }
-                    ,
+                  <Space>
                     <Button
+                      key="footer-btn-1"
+                      onClick={() => {
+                        // if (excluded.includes(values.co_product_id)) {
+                        //   message.warn("Vôce removeu esse item do seu carrinho")
+                        //   return;
+                        // }
+                        navigate(`/minhas-compras/checkout/${values.co_product_id}`, { state: { data: values } })
+                      }
+                      }
+                      style={{
+                        color: 'white',
+                        background: '#8fce00'
+                      }}
+                      type="default"
+                      icon={<CheckOutlined />}
+                    >
+                      Finalizar compra
+                    </Button>
+                    <Button
+                      key="footer-btn-2"
                       onClick={() => removeFromCart(values.co_product_name, values.co_product_id)}
                       danger
                       icon={<DeleteOutlined />}
                     >
                       Excluir
                     </Button>
-                  </Col>
+                  </Space>
                 ]}
               >
                 <div onClick={() => {
