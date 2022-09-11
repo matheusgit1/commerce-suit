@@ -41,9 +41,9 @@ export const Header: React.FC<props> = () => {
   const { Text } = Typography
   const authContext = useAuthContext()
   const productContext = useProductContext()
+  const [numberInBadge, setNumberInBadge] = React.useState<number>(0)
 
-
-  //relacionados ao contexto de autenticação
+  //relations with auth context
   React.useEffect(() => {
     const initialize = async () => {
       //do something
@@ -51,14 +51,11 @@ export const Header: React.FC<props> = () => {
     initialize()
   }, [authContext.user, authContext.userAdress, authContext.userListAdress])
 
-  //relacionados ao contexto de produtos
+  //elations with product context
   React.useEffect(() => {
-    const initialize = async () => {
-      //do something
-    }
-    initialize()
+    console.log(productContext.cartIds, productContext.cartIds.length)
+    setNumberInBadge(productContext.cartIds.length)
   }, [productContext.cartIds])
-
 
 
   const [visible, setVisible] = React.useState<boolean>(false);
@@ -66,11 +63,8 @@ export const Header: React.FC<props> = () => {
   const [loading, setLoading] = React.useState<boolean>(false)
   const [open, setOpen] = React.useState(false);
 
-
   return (
     <React.Fragment>
-
-
       <Modal
         title="Seus endereços"
         centered
