@@ -5,17 +5,14 @@ import banner2 from '../../assets/banners/banner2.webp'
 import banner3 from '../../assets/banners/banner3.webp'
 import { EngineDetails, ProductCards } from '../../components'
 import { useProductContext } from '../../context'
-import { Carousel, Col, Divider, Row, Typography, Card, Modal, Pagination } from 'antd';
+import { Carousel, Col, Divider, Row, Typography, Card, Modal, Pagination, message } from 'antd';
 import { LockOutlined, CreditCardOutlined, PlusCircleOutlined, FieldTimeOutlined } from '@ant-design/icons';
 import ItemsCarousel from 'react-items-carousel';
 // import MultiCarousel from "react-multi-carousel";
 import { BsFillArrowLeftCircleFill, BsFillArrowRightCircleFill } from 'react-icons/bs'
 import { useWindowDimensions } from '../../hooks/useWindownDimension'
-import { toast } from 'react-toastify'
 
 interface props { }
-
-
 
 export const Home: React.FC<props> = ({ }) => {
 
@@ -51,10 +48,10 @@ export const Home: React.FC<props> = ({ }) => {
         return
       } catch (error: any) {
         if (error.response.data.erro) {
-          toast.error(error.response.data.erro)
+          message.error(error.response.data.erro)
           return
         }
-        toast.error("Erro ao listar produtos")
+        message.error("Erro ao listar produtos")
         return
       }
     }
