@@ -1,9 +1,37 @@
 import React from 'react'
 import { ProductDetails } from '../../components'
-import { Divider, Row, Typography, Col, Pagination } from 'antd'
+
+import {
+  Divider,
+  Row,
+  Typography,
+  Col,
+  Pagination,
+  Space,
+  Input,
+  Button
+} from 'antd'
+
+import {
+  LockOutlined,
+  UserOutlined,
+  CreditCardOutlined,
+  MinusOutlined,
+  PlusOutlined,
+  UpSquareOutlined
+} from '@ant-design/icons';
+
 import { useProductContext } from '../../context'
-import { useParams, useLocation } from 'react-router-dom'
-import { ProductCards } from '../../components'
+
+import {
+  useParams,
+  useLocation
+} from 'react-router-dom'
+
+import {
+  ProductCards,
+  ProductFeatures
+} from '../../components'
 
 interface props { }
 
@@ -39,7 +67,7 @@ export const ProductById: React.FC<props> = ({ }) => {
 
   const [listProduct, setListProduct] = React.useState<Array<any>>([])
   const [indexPagination, setIndexPagination] = React.useState<number>(1)
-
+  const [quantityInCart, setQuantityInCart] = React.useState<number>(0)
 
   //carrega lista de ultimos anuncios (genericos)
   React.useEffect(() => {
@@ -55,6 +83,8 @@ export const ProductById: React.FC<props> = ({ }) => {
   const { Title } = Typography
   React.useEffect(() => {
     const initialize = async () => {
+      //@ts-ignore
+      console.log(location.state?.data)
       //@ts-ignore
       if (!location.state?.data) {
         //@ts-ignore
@@ -83,24 +113,32 @@ export const ProductById: React.FC<props> = ({ }) => {
 
   return (
     <React.Fragment>
-      {/* @ts-ignore */}
-      <ProductDetails data={location.state?.data || productdata} wishListButton={true} />
-      <Divider style={{ width: 16 }} orientation="left">
-        <Title style={{ margin: 45 }}> Relacionados </Title>
-      </Divider>
-      <Row style={{ justifyContent: "space-around" }} >
-        {
-          listProduct?.map((values, index) => (
-            <Col key={index}>
-              <ProductCards key={index} data={values} />
-            </Col>
-          ))
-        }
-      </Row>
-      <Row style={{ justifyContent: "space-around", marginTop: 15, marginBottom: 15 }} >
-        <Pagination onChange={(e) => setIndexPagination(e)} defaultCurrent={1} total={1000} />
-        {/* (listProduct?.length || 20) / 20 */}
-      </Row>
+      <div style={{ display: "flex", justifyContent: "center" }}>
+        <div style={{ maxWidth: 1000, marginTop: 30 }}>
+          {/* @ts-ignore */}
+          <ProductDetails data={location.state?.data || productdata} wishListButton={true} />
+          {/* <Row style={{ justifyContent: "flex-end", marginTop: 5 }}>*/}
+          <div style={{ marginTop: 55 }}></div>
+          {/* @ts-ignore */}
+          <ProductFeatures data={location.state?.data.features || productdata} />
+          <Divider style={{ width: 16 }} orientation="left">
+            <Title style={{ margin: 45 }}> Relacionados </Title>
+          </Divider>
+          <Row style={{ justifyContent: "space-around" }} >
+            {
+              listProduct?.map((values, index) => (
+                <Col key={index}>
+                  <ProductCards key={index} data={values} />
+                </Col>
+              ))
+            }
+          </Row>
+          <Row style={{ justifyContent: "space-around", marginTop: 15, marginBottom: 15 }} >
+            <Pagination onChange={(e) => setIndexPagination(e)} defaultCurrent={1} total={1000} />
+            {/* (listProduct?.length || 20) / 20 */}
+          </Row>
+        </div>
+      </div>
     </React.Fragment>
   )
 }
