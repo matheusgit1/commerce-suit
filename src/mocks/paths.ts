@@ -1,3 +1,4 @@
+
 export const paths = {
   home: "/",
   login: "/login",
@@ -8,7 +9,8 @@ export const paths = {
   productById: "/produto/:id",
   myPurchases: "/minhas-compras",
   wishList: "/minha-lista-de-desejos",
-  checkout: "/minhas-compras/checkout/:id"
+  checkout: "/minhas-compras/checkout/:id",
+  sucefullyPurchase: "/minhas-compras/checkout/:id/finalizado"
 }
 
 
