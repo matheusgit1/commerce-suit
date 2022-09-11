@@ -23,7 +23,6 @@
     "react-items-carousel": "^2.8.0",
     "react-responsive-carousel": "^3.2.23",
     "react-router-dom": "^6.3.0",
-    "react-toastify": "^9.0.8",
     "styled-components": "^5.3.5"
   },
   "devDependencies": {
@@ -37,7 +36,6 @@
     "@types/react-image-magnify": "^2.7.1",
     "@types/react-payment-inputs": "^1.1.0",
     "@types/react-router-dom": "^5.3.3",
-    "@types/react-toastify": "^4.1.0",
     "@types/styled-components": "^5.1.26",
     "@vitejs/plugin-react": "^2.0.1",
     "typescript": "^4.6.4",
