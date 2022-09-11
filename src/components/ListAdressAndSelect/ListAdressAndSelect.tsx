@@ -6,7 +6,8 @@ import {
   Modal,
   Col,
   Form,
-  Space
+  Space,
+  message
 } from 'antd'
 import {
   EditOutlined,
@@ -18,15 +19,16 @@ import { useWindowDimensions } from '../../hooks/useWindownDimension'
 import { BsTruck } from 'react-icons/bs'
 import { } from 'react-icons/bs'
 import { useAuthContext } from '../../context'
-import { toast } from 'react-toastify'
 import { FormEditAdress, TAdressForm } from '../../components'
 import {
   IAdressFormat
 } from '../../services'
 
-interface props { }
+interface props {
+  buttonAddNewAdress?: boolean
+}
 
-export const ListAdressAndSelect: React.FC<props> = ({ }) => {
+export const ListAdressAndSelect: React.FC<props> = ({ buttonAddNewAdress }) => {
 
   const authContext = useAuthContext()
   const { Meta } = Card
@@ -40,10 +42,20 @@ export const ListAdressAndSelect: React.FC<props> = ({ }) => {
   const [loading, setLoading] = React.useState<boolean>(false)
   const [typeModalAdress, setTypeModalAdres] = React.useState<TAdressForm>("edit")
 
-
-
   React.useEffect(() => {
-    //do something
+    //list adress
+    const initialize = async () => {
+      // try {
+      //   console.log(authContext.user?.access_token)
+      //   const { data } = await authContext.listUserAdress("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InBlcmVpcmEubWF0aGV1c2FsdmVzQGdtYWlsLmNvbSIsInVzZXJuYW1lIjoiTWF0aGV1cyIsImlkIjoiOTU4MDVjZmUtOGJhYi00ZTMwLWE3ZmYtNDI2MDA4MzVjYzM0IiwiaWF0IjoxNjYyODQxODk2LCJleHAiOjE2NjM0NDY2OTZ9.BBTwVZ2MAAtt9VHSSSYWxXZP_SsEkKkB2Y6n71fE1wU")
+      //   authContext.createUserAdress(data)
+      //   console.log(data)
+      // } catch (error: any) {
+      //   message.error("erro ao listar seus endereços")
+      //   console.log(error)
+      // }
+    }
+    initialize()
   }, [authContext.userListAdress, authContext.userAdress])
 
   const deleteAdress = async (adressId: string) => {
@@ -51,17 +63,17 @@ export const ListAdressAndSelect: React.FC<props> = ({ }) => {
       setLoading(true)
       const { status } = await authContext.deleteUserAdress({ adressId: adressId }, { 'Authorization': `Bearer ${authContext.user?.access_token}` })
       authContext.removeAdressFromList(adressId)
-      toast.warn("Endereço deletado")
+      message.warn("Endereço deletado")
       setLoading(false)
       return
     } catch (error: any) {
       console.error("erro: ", error)
       setLoading(false)
       if (error.response.data.erro) {
-        toast.error(error.response.data.erro || error.response.data.message)
+        message.error(error.response.data.erro || error.response.data.message)
         return
       }
-      toast.error("Erro interno")
+      message.error("Erro interno")
       return
     }
   }
@@ -129,7 +141,7 @@ export const ListAdressAndSelect: React.FC<props> = ({ }) => {
                       <Button
                         onClick={() => {
                           authContext.createUserAdress(values)
-                          toast.success("Novo endereço padrão selecionado")
+                          message.success("Novo endereço padrão selecionado")
                         }}
                         style={{
                           color: authContext.userAdress?.id === values.id ? 'white' : 'blue',
@@ -164,13 +176,27 @@ export const ListAdressAndSelect: React.FC<props> = ({ }) => {
                     icon={<DeleteOutlined />}
                   >
                     Excluir
+                  </Button>,
+                  <Button
+                    type="primary"
+                    // onClick={() => }
+                    onClick={() => {
+                      setTypeModalAdres("create")
+                      setModalData(undefined)
+                      setVisibleEditAdressModal(true)
+                    }}
+                    icon={<PlusCircleOutlined />}
+                    style={{ visibility: buttonAddNewAdress ? "visible" : "hidden" }}
+                  >
+                    Adicionar
                   </Button>
+
                 </Col>
               ]}
             >
               <div onClick={() => {
                 authContext.createUserAdress(values)
-                toast.success("Novo endereço padrão selecionado")
+                message.success("Novo endereço padrão selecionado")
               }}
               >
                 <Meta
