@@ -1,25 +1,25 @@
-import React, { useEffect } from 'react'
+import React, { useEffect } from "react";
 
-import { Container, WrapperLinks, NavLink } from './BurgerMenu.styles'
+import { Container, WrapperLinks, NavLink } from "./BurgerMenu.styles";
 
 type BurgerMenuProps = {
-  visibility: boolean
-  toggleMenuVisibility: () => void
-}
+  visibility: boolean;
+  toggleMenuVisibility: () => void;
+};
 
 export function BurgerMenu({
   visibility,
   toggleMenuVisibility,
 }: BurgerMenuProps) {
   useEffect(() => {
-    document.body.style.overflow = visibility ? 'hidden' : 'auto'
-  }, [visibility])
+    document.body.style.overflow = visibility ? "hidden" : "auto";
+  }, [visibility]);
   return (
     <Container $visibility={visibility} onClick={() => toggleMenuVisibility()}>
       <WrapperLinks
         $visibility={visibility}
         onClick={(e) => {
-          e.stopPropagation()
+          e.stopPropagation();
         }}
       >
         <NavLink>Início</NavLink>
@@ -31,5 +31,5 @@ export function BurgerMenu({
         <NavLink>Quem somos</NavLink>
       </WrapperLinks>
     </Container>
-  )
+  );
 }

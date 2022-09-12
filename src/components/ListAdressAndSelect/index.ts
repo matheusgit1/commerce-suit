@@ -1,1 +1,1 @@
-export * from './ListAdressAndSelect'
+export * from "./ListAdressAndSelect";

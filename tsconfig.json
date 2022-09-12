@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "types": [ "@honkhonk/vite-plugin-svgr/client", "node" ],
+    "types": ["@honkhonk/vite-plugin-svgr/client", "node"],
     "target": "ESNext",
     "useDefineForClassFields": true,
     "lib": ["DOM", "DOM.Iterable", "ESNext"],

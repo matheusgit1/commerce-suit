@@ -1,9 +1,9 @@
-import React from 'react'
+import React from "react";
 
-import { StyledCarousel, CarouselImage } from './Carousel.styles'
+import { StyledCarousel, CarouselImage } from "./Carousel.styles";
 
 interface CarouselProps {
-  imagesUrls: string[]
+  imagesUrls: string[];
 }
 
 export function Carousel({ imagesUrls }: CarouselProps) {
@@ -19,5 +19,5 @@ export function Carousel({ imagesUrls }: CarouselProps) {
         <CarouselImage key={`${url}${index}`} src={url} />
       ))}
     </StyledCarousel>
-  )
+  );
 }

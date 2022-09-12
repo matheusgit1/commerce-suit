@@ -1,8 +1,8 @@
-import styled, { css } from 'styled-components'
+import styled, { css } from "styled-components";
 
 type MenuProps = {
-  $visibility: boolean
-}
+  $visibility: boolean;
+};
 
 export const Container = styled.div<MenuProps>`
   width: 100%;
@@ -30,7 +30,7 @@ export const Container = styled.div<MenuProps>`
       opacity: 1;
       pointer-events: auto;
     `}
-`
+`;
 
 export const WrapperLinks = styled.div<MenuProps>`
   width: 100%;
@@ -69,10 +69,10 @@ export const WrapperLinks = styled.div<MenuProps>`
       transition: 500ms;
     }
   }
-`
+`;
 
 export const NavLink = styled.a`
   font-size: 1.4rem;
   font-weight: bold;
   color: #ff7400;
-`
+`;

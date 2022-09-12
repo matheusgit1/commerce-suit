@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   AppstoreOutlined,
   ShoppingOutlined,
@@ -16,52 +16,40 @@ import {
   LogoutOutlined,
   LoginOutlined,
   PlusCircleOutlined,
-  HomeOutlined
-} from '@ant-design/icons';
-import {
-  Menu,
-  Typography,
-  Modal,
-  Button,
-  Badge,
-  message,
-  Row
-} from 'antd';
-import { useAuthContext, useProductContext } from '../../context'
-import { useNavigate } from 'react-router-dom'
-import { paths } from '../../mocks/paths'
-import { ListAdressAndSelect } from '../../components/ListAdressAndSelect'
-import { TAdressForm, FormEditAdress } from '../../components'
-import { notification } from './Mocks/notification.mock'
-import { questions } from './Mocks/questions.mock'
-interface props { }
-
+  HomeOutlined,
+} from "@ant-design/icons";
+import { Menu, Typography, Modal, Button, Badge, message, Row } from "antd";
+import { useAuthContext, useProductContext } from "../../context";
+import { useNavigate } from "react-router-dom";
+import { paths } from "../../mocks/paths";
+import { ListAdressAndSelect } from "../../components/ListAdressAndSelect";
+import { TAdressForm, FormEditAdress } from "../../components";
+import { notification } from "./Mocks/notification.mock";
+import { questions } from "./Mocks/questions.mock";
+interface props {}
 
 export const Header: React.FC<props> = () => {
-  const navigate = useNavigate()
-  const { Text } = Typography
-  const authContext = useAuthContext()
-  const productContext = useProductContext()
-  const [numberInBadge, setNumberInBadge] = React.useState<number>(0)
+  const navigate = useNavigate();
+  const { Text } = Typography;
+  const authContext = useAuthContext();
+  const productContext = useProductContext();
+  const [numberInBadge, setNumberInBadge] = React.useState<number>(0);
 
   //relations with auth context
   React.useEffect(() => {
     const initialize = async () => {
       //do something
-    }
-    initialize()
-  }, [authContext.user, authContext.userAdress, authContext.userListAdress])
+    };
+    initialize();
+  }, [authContext.user, authContext.userAdress, authContext.userListAdress]);
 
   //elations with product context
-  React.useEffect(() => {
-
-  }, [productContext.cartIds])
-
+  React.useEffect(() => {}, [productContext.cartIds]);
 
   const [visible, setVisible] = React.useState<boolean>(false);
-  const [visibleEditAdressModal, setVisibleEditAdressModal] = React.useState<boolean>(false)
-  const [loading, setLoading] = React.useState<boolean>(false)
-  const [open, setOpen] = React.useState(false);
+  const [visibleEditAdressModal, setVisibleEditAdressModal] =
+    React.useState<boolean>(false);
+  const [loading, setLoading] = React.useState<boolean>(false);
 
   return (
     <React.Fragment>
@@ -76,7 +64,7 @@ export const Header: React.FC<props> = () => {
           <Button
             key="add-new-one"
             onClick={() => {
-              setVisibleEditAdressModal(true)
+              setVisibleEditAdressModal(true);
             }}
             loading={loading}
             type="primary"
@@ -102,85 +90,133 @@ export const Header: React.FC<props> = () => {
       </Modal>
 
       <Menu style={{ justifyContent: "flex-end" }} mode={"horizontal"}>
-
-        <Menu.Item onClick={() => navigate(paths.home)} key="home" icon={<HomeOutlined width={30} />}>
-          <Text >Home</Text>
+        <Menu.Item
+          onClick={() => navigate(paths.home)}
+          key="home"
+          icon={<HomeOutlined width={30} />}
+        >
+          <Text>Home</Text>
         </Menu.Item>
 
         {/* <Row style={{ display: "flex", flex: 1, justifyContent: "right" }}> */}
-        <Menu.Item onClick={() => setVisible(true)} key="adress" icon={<EnvironmentOutlined />}>
-          <Text ellipsis={true}>{authContext.userAdress?.street || "Endereço"}</Text>
+        <Menu.Item
+          onClick={() => setVisible(true)}
+          key="adress"
+          icon={<EnvironmentOutlined />}
+        >
+          <Text ellipsis={true}>
+            {authContext.userAdress?.street || "Endereço"}
+          </Text>
         </Menu.Item>
 
-        <Menu.Item onClick={() => navigate(paths.myPurchases)} key="buyes" icon={<ShoppingCartOutlined />}>
+        <Menu.Item
+          onClick={() => navigate(paths.myPurchases)}
+          key="buyes"
+          icon={<ShoppingCartOutlined />}
+        >
           <Text>
-            <Badge count={productContext.cartIds.length} overflowCount={10} size="default">
+            <Badge
+              count={productContext.cartIds.length}
+              overflowCount={10}
+              size="default"
+            >
               Compras
             </Badge>
           </Text>
         </Menu.Item>
 
-        <Menu.SubMenu key="questions-1" title="perguntas" icon={<QuestionCircleOutlined />}>
+        <Menu.SubMenu
+          key="questions-1"
+          title="perguntas"
+          icon={<QuestionCircleOutlined />}
+        >
           <React.Fragment>
             <Menu.Item
-              style={{ display: "flex", flex: 1, justifyContent: "center", alignItems: "center" }}
+              style={{
+                display: "flex",
+                flex: 1,
+                justifyContent: "center",
+                alignItems: "center",
+              }}
               key="11-questions"
             >
               <Text type="danger">Ilustração</Text>
             </Menu.Item>
-            {
-              questions.map((values, index) => (
-                <Menu.Item
-                  style={{ maxWidth: 300 }}
-                  key={`${index}-1${index}-questions`}
-                  icon={
-                    <Badge size="default">
-                      <QuestionCircleOutlined />
-                    </Badge>
-                  }
-                >
-                  <Text>{values.body}</Text>
-                </Menu.Item>
-              ))
-            }
+            {questions.map((values, index) => (
+              <Menu.Item
+                style={{ maxWidth: 300 }}
+                key={`${index}-1${index}-questions`}
+                icon={
+                  <Badge size="default">
+                    <QuestionCircleOutlined />
+                  </Badge>
+                }
+              >
+                <Text>{values.body}</Text>
+              </Menu.Item>
+            ))}
             <Menu.Item
-              style={{ display: "flex", flex: 1, justifyContent: "center", alignItems: "center" }}
+              style={{
+                display: "flex",
+                flex: 1,
+                justifyContent: "center",
+                alignItems: "center",
+              }}
               key="15-questions"
             >
-              <Button onClick={() => navigate(paths.questions)} type="primary">Ir para todas</Button>
+              <Button onClick={() => navigate(paths.questions)} type="primary">
+                Ir para todas
+              </Button>
             </Menu.Item>
           </React.Fragment>
         </Menu.SubMenu>
 
-        <Menu.SubMenu key="10-Notificações" title="Notificações" icon={<BellOutlined />}>
+        <Menu.SubMenu
+          key="10-Notificações"
+          title="Notificações"
+          icon={<BellOutlined />}
+        >
           <React.Fragment>
             <Menu.Item
-              style={{ display: "flex", flex: 1, justifyContent: "center", alignItems: "center" }}
+              style={{
+                display: "flex",
+                flex: 1,
+                justifyContent: "center",
+                alignItems: "center",
+              }}
               key="11-Notificações"
             >
               <Text type="danger">Ilustração</Text>
             </Menu.Item>
-            {
-              notification.map((values, index) => (
-                <Menu.Item
-                  style={{ maxWidth: 300 }}
-                  key={`${index}-1${index}-Notificações`}
-                  icon={
-                    <Badge size="default">
-                      <BellOutlined />
-                    </Badge>
-                  }
-                >
-                  <Text>{values.body}</Text>
-                </Menu.Item>
-              ))
-            }
+            {notification.map((values, index) => (
+              <Menu.Item
+                style={{ maxWidth: 300 }}
+                key={`${index}-1${index}-Notificações`}
+                icon={
+                  <Badge size="default">
+                    <BellOutlined />
+                  </Badge>
+                }
+              >
+                <Text>{values.body}</Text>
+              </Menu.Item>
+            ))}
 
             <Menu.Item
-              style={{ display: "flex", flex: 1, justifyContent: "center", alignItems: "center" }}
+              style={{
+                display: "flex",
+                flex: 1,
+                justifyContent: "center",
+                alignItems: "center",
+              }}
               key="15-Notificações"
             >
-              <Button onClick={() => navigate(paths.notifications)} type="primary">Ir para todas</Button>
+              <Button
+                onClick={() => navigate(paths.notifications)}
+                type="primary"
+              >
+                Ir para todas
+              </Button>
             </Menu.Item>
           </React.Fragment>
         </Menu.SubMenu>
@@ -189,45 +225,74 @@ export const Header: React.FC<props> = () => {
           <Text>Notificações</Text>
         </Menu.Item> */}
 
-        {
-          !authContext.user ? (
-            <Menu.Item key="login-1" onClick={() => navigate(paths.login)} icon={<LoginOutlined />}>
-              <Text>Login</Text>
-            </Menu.Item>
-          ) : <Menu.SubMenu key="user" title="USUARIO" icon={<UserOutlined />}>
+        {!authContext.user ? (
+          <Menu.Item
+            key="login-1"
+            onClick={() => navigate(paths.login)}
+            icon={<LoginOutlined />}
+          >
+            <Text>Login</Text>
+          </Menu.Item>
+        ) : (
+          <Menu.SubMenu key="user" title="USUARIO" icon={<UserOutlined />}>
             <Menu.ItemGroup title="Configurações">
-
-              <Menu.Item onClick={() => navigate(paths.notifications)} key="10-Notificações" icon={<BellOutlined />}>
+              <Menu.Item
+                onClick={() => navigate(paths.notifications)}
+                key="10-Notificações"
+                icon={<BellOutlined />}
+              >
                 <Text>Notificações</Text>
               </Menu.Item>
 
-              <Menu.Item onClick={() => navigate(paths.questions)} key="questions-1" icon={<QuestionCircleOutlined />}>
+              <Menu.Item
+                onClick={() => navigate(paths.questions)}
+                key="questions-1"
+                icon={<QuestionCircleOutlined />}
+              >
                 <Text>Perguntas</Text>
               </Menu.Item>
 
-              <Menu.Item onClick={() => message.warn("Sistem de configurações em desenvolvimento")} key="3-Configurações" icon={<SettingOutlined />}>
+              <Menu.Item
+                onClick={() =>
+                  message.warn("Sistem de configurações em desenvolvimento")
+                }
+                key="3-Configurações"
+                icon={<SettingOutlined />}
+              >
                 <Text>Gerais</Text>
               </Menu.Item>
-
             </Menu.ItemGroup>
 
             <Menu.ItemGroup title="Compras">
-
-              <Menu.Item onClick={() => navigate(paths.wishList)} key="1-Compras" icon={<AppstoreOutlined />}>
-                <Badge count={productContext.wishList.length} overflowCount={10} size="default">
+              <Menu.Item
+                onClick={() => navigate(paths.wishList)}
+                key="1-Compras"
+                icon={<AppstoreOutlined />}
+              >
+                <Badge
+                  count={productContext.wishList.length}
+                  overflowCount={10}
+                  size="default"
+                >
                   <Text>Lista de desejos</Text>
                 </Badge>
               </Menu.Item>
 
-              <Menu.Item onClick={() => navigate(paths.myPurchases)} key="2-Compras" icon={<AppstoreOutlined />}>
+              <Menu.Item
+                onClick={() => navigate(paths.myPurchases)}
+                key="2-Compras"
+                icon={<AppstoreOutlined />}
+              >
                 <Text>compras</Text>
               </Menu.Item>
-
             </Menu.ItemGroup>
 
             <Menu.ItemGroup title="Perfil">
-
-              <Menu.Item onClick={() => setOpen(true)} key="1-Perfil" icon={<ProfileOutlined />}>
+              <Menu.Item
+                onClick={() => navigate(paths.profile)}
+                key="1-Perfil"
+                icon={<ProfileOutlined />}
+              >
                 <Text>Meu perfil</Text>
               </Menu.Item>
 
@@ -243,18 +308,18 @@ export const Header: React.FC<props> = () => {
                 <Text>relatorios</Text>
               </Menu.Item>
 
-              <Menu.Item key="5-logout" onClick={() => authContext.logout()} icon={<LogoutOutlined />}>
+              <Menu.Item
+                key="5-logout"
+                onClick={() => authContext.logout()}
+                icon={<LogoutOutlined />}
+              >
                 <Text>Sair</Text>
               </Menu.Item>
-
             </Menu.ItemGroup>
-
           </Menu.SubMenu>
-        }
+        )}
         {/* </Row> */}
-
-
       </Menu>
-    </React.Fragment >
-  )
-}
+    </React.Fragment>
+  );
+};

@@ -10,7 +10,7 @@ import {
   FormOptions,
   FormOptionsNote,
   FormButton,
-  FormLink
+  FormLink,
 } from "./form.styles";
 
 const Form = () => {
@@ -64,4 +64,4 @@ const Form = () => {
       </FormWrapper>
     </div>
   );
-}
+};

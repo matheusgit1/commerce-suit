@@ -1,1 +1,1 @@
-export * from './sucefully-purchase'
+export * from "./sucefully-purchase";

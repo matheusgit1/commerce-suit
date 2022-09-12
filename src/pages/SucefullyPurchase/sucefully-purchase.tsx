@@ -1,35 +1,30 @@
-import React from 'react'
-import { Result, Button, Space, Typography } from 'antd'
-import { BsTruck } from 'react-icons/bs'
-import {
-  useParams,
-  useLocation,
-  useNavigate,
-} from 'react-router-dom'
-import { useAuthContext } from '../../context'
-import { paths } from '../../mocks/paths'
+import React from "react";
+import { Result, Button, Space, Typography } from "antd";
+import { BsTruck } from "react-icons/bs";
+import { useParams, useLocation, useNavigate } from "react-router-dom";
+import { useAuthContext } from "../../context";
+import { paths } from "../../mocks/paths";
 
-interface props { }
+interface props {}
 
-export default function SucefullyPurchase({ }) {
+export default function SucefullyPurchase({}) {
+  const params = useParams();
+  const location = useLocation();
+  const navigate = useNavigate();
+  const authContext = useAuthContext();
 
-  const params = useParams()
-  const location = useLocation()
-  const navigate = useNavigate()
-  const authContext = useAuthContext()
-
-  const { Title, Text } = Typography
+  const { Title, Text } = Typography;
 
   React.useEffect(() => {
     const initialize = async () => {
       //@ts-ignore
-      if (!location.state.id as any || !params.id) {
-        navigate(paths.myPurchases)
+      if ((!location.state.id as any) || !params.id) {
+        navigate(paths.myPurchases);
       }
-    }
-    initialize()
+    };
+    initialize();
     //@ts-ignore
-  }, [location.state.id])
+  }, [location.state.id]);
 
   return (
     <React.Fragment>
@@ -41,7 +36,11 @@ export default function SucefullyPurchase({ }) {
         subTitle={
           <React.Fragment>
             <Text>Agora é só esperar</Text> <br />
-            <Text>Será entregue em {authContext.userAdress?.city}, cep: {authContext.userAdress?.zipCode}</Text><br />
+            <Text>
+              Será entregue em {authContext.userAdress?.city}, cep:{" "}
+              {authContext.userAdress?.zipCode}
+            </Text>
+            <br />
           </React.Fragment>
         }
         extra={[
@@ -49,10 +48,16 @@ export default function SucefullyPurchase({ }) {
             <Button onClick={() => navigate(paths.home)} key="home">
               Voltar para o inicio
             </Button>
-            <Button onClick={() => navigate(paths.myPurchases)} type="primary" key="buy">Continuar comprando</Button>
-          </Space>
+            <Button
+              onClick={() => navigate(paths.myPurchases)}
+              type="primary"
+              key="buy"
+            >
+              Continuar comprando
+            </Button>
+          </Space>,
         ]}
       />
     </React.Fragment>
-  )
+  );
 }

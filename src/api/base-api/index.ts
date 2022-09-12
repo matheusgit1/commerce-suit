@@ -1,2 +1,2 @@
-export * from './axios.instance'
-export * from './basePaths'
+export * from "./axios.instance";
+export * from "./basePaths";

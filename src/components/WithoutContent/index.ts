@@ -1,1 +1,1 @@
-export * from './WithoutContent'
+export * from "./WithoutContent";

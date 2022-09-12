@@ -1,4 +1,3 @@
-
 export const paths = {
   home: "/",
   login: "/login",
@@ -12,8 +11,6 @@ export const paths = {
   checkout: "/minhas-compras/checkout/:id",
   sucefullyPurchase: "/minhas-compras/checkout/:id/finalizado",
   notifications: "/notificacao",
-  questions: "/perguntas"
-}
-
-
-
+  questions: "/perguntas",
+  profile: "/perfil",
+};

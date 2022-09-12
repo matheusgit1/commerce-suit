@@ -1,20 +1,20 @@
-import React, { HTMLProps } from 'react'
+import React, { HTMLProps } from "react";
 
-import { Container, StyledButton, ButtonStyleProps } from './Button.styles'
+import { Container, StyledButton, ButtonStyleProps } from "./Button.styles";
 
 export interface ButtonProps
   extends ButtonStyleProps,
     HTMLProps<HTMLButtonElement> {
-  label: string
+  label: string;
 }
 
 export function Button({
   className,
   label,
-  mode = 'default',
+  mode = "default",
   labelColor,
   fontSize,
-  unitType = 'rem',
+  unitType = "rem",
   ...rest
 }: ButtonProps) {
   return (
@@ -31,5 +31,5 @@ export function Button({
         {label}
       </StyledButton>
     </Container>
-  )
+  );
 }

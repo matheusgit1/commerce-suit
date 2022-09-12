@@ -1,5 +1,5 @@
-import React from 'react'
-import { Result } from 'antd'
+import React from "react";
+import { Result } from "antd";
 
 export const WithoutContent: React.FC = () => {
   return (
@@ -10,5 +10,5 @@ export const WithoutContent: React.FC = () => {
         subTitle="Nada para mostrar nessa página."
       />
     </React.Fragment>
-  )
-}
+  );
+};

@@ -1,20 +1,19 @@
-import React from 'react'
-import { message } from 'antd'
-import { Container, Title } from './change-password.styles'
-import { Form } from '../../components'
-import { useNavigate } from 'react-router-dom'
-import { paths } from '../../mocks/paths'
-import { useAuthContext } from '../../context'
-import { useLocation, useParams } from 'react-router-dom';
+import React from "react";
+import { message } from "antd";
+import { Container, Title } from "./change-password.styles";
+import { Form } from "../../components";
+import { useNavigate } from "react-router-dom";
+import { paths } from "../../mocks/paths";
+import { useAuthContext } from "../../context";
+import { useLocation, useParams } from "react-router-dom";
 
-interface props { }
+interface props {}
 
-export default ChangePasswordWithoutLogin({}){
-
-  const AuthContext = useAuthContext()
-  const navigate = useNavigate()
-  const location = useLocation()
-  const params = useParams()
+export default function ChangePasswordWithoutLogin({}) {
+  const AuthContext = useAuthContext();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const params = useParams();
 
   const {
     FormWrapper,
@@ -26,31 +25,36 @@ export default ChangePasswordWithoutLogin({}){
     FormInput,
     FormButton,
     FormLink,
-    FormFieldLabel
-  } = Form
+    FormFieldLabel,
+  } = Form;
 
   const onSubmit = async (event: any) => {
-    event.preventDefault()
+    event.preventDefault();
 
     try {
       //@ts-ignore
-      const { data } = await AuthContext.changePasswordWithoutLogin({ email: email, password: password, confirmPassword: confirmPassword, token: params.token })
-      message.success(data.mensagem)
-      navigate(paths.login)
+      const { data } = await AuthContext.changePasswordWithoutLogin({
+        email: email,
+        password: password,
+        confirmPassword: confirmPassword,
+        token: params.token,
+      });
+      message.success(data.mensagem);
+      navigate(paths.login);
       return;
     } catch (error: any) {
       if (error.response.data.erro) {
-        message.error(error.response.data.erro)
-        return
+        message.error(error.response.data.erro);
+        return;
       }
-      message.error("Erro interno")
-      return
+      message.error("Erro interno");
+      return;
     }
-  }
+  };
 
-  const [email, setEmail] = React.useState<string>('')
-  const [password, setPassword] = React.useState<string>('')
-  const [confirmPassword, setConfirmPassword] = React.useState<string>('')
+  const [email, setEmail] = React.useState<string>("");
+  const [password, setPassword] = React.useState<string>("");
+  const [confirmPassword, setConfirmPassword] = React.useState<string>("");
 
   return (
     <React.Fragment>
@@ -65,17 +69,32 @@ export default ChangePasswordWithoutLogin({}){
             <FormBody onSubmit={(e) => onSubmit(e)}>
               <FormFieldset>
                 <FormFieldLabel>E-mail</FormFieldLabel>
-                <FormInput placeholder="E-mail" type="email" required onChange={(e) => setEmail(e.target.value)} />
+                <FormInput
+                  placeholder="E-mail"
+                  type="email"
+                  required
+                  onChange={(e) => setEmail(e.target.value)}
+                />
               </FormFieldset>
 
               <FormFieldset>
                 <FormFieldLabel>Senha</FormFieldLabel>
-                <FormInput placeholder="senha" type="password" required onChange={(e) => setPassword(e.target.value)} />
+                <FormInput
+                  placeholder="senha"
+                  type="password"
+                  required
+                  onChange={(e) => setPassword(e.target.value)}
+                />
               </FormFieldset>
 
               <FormFieldset>
                 <FormFieldLabel>confirmação de senha</FormFieldLabel>
-                <FormInput placeholder="senha" type="password" required onChange={(e) => setConfirmPassword(e.target.value)} />
+                <FormInput
+                  placeholder="senha"
+                  type="password"
+                  required
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                />
               </FormFieldset>
 
               <FormFieldset>
@@ -83,13 +102,14 @@ export default ChangePasswordWithoutLogin({}){
               </FormFieldset>
 
               <FormFieldset>
-                <FormLink onClick={() => navigate(paths.newAcount)}>não possui uma conta? crie uma</FormLink>
+                <FormLink onClick={() => navigate(paths.newAcount)}>
+                  não possui uma conta? crie uma
+                </FormLink>
               </FormFieldset>
             </FormBody>
           </FormWrapper>
         </React.Fragment>
-
       </Container>
     </React.Fragment>
-  )
+  );
 }

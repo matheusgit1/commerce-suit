@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 import styled, { css } from "styled-components";
 
 export const FormWrapper = styled.div`
@@ -66,28 +66,28 @@ export const FormInput = styled.input`
   }
 `;
 
-interface FormIconProps extends React.HTMLAttributes<HTMLSpanElement>{
-  big?: boolean,
-  eye?: boolean,
-  small?: boolean,
+interface FormIconProps extends React.HTMLAttributes<HTMLSpanElement> {
+  big?: boolean;
+  eye?: boolean;
+  small?: boolean;
 }
 export const FormIcon = styled.span<FormIconProps>`
   color: #666;
   cursor: pointer;
-  opacity: .25;
-  transition: opacity .25s ease-in;
+  opacity: 0.25;
+  transition: opacity 0.25s ease-in;
 
   &:hover {
-    opacity: .95;
+    opacity: 0.95;
   }
 
-  ${props =>
+  ${(props) =>
     props.big &&
     css`
       font-size: 26px;
     `}
 
-  ${props =>
+  ${(props) =>
     props.eye &&
     css`
       position: absolute;
@@ -95,7 +95,7 @@ export const FormIcon = styled.span<FormIconProps>`
       right: 0;
     `}
 
-  ${props =>
+  ${(props) =>
     props.small &&
     css`
       font-size: 14px;
@@ -169,4 +169,4 @@ export const FormFieldLabel = styled.label`
   font-weight: 600;
   opacity: 0.7;
   color: #000;
-`
+`;

@@ -1,1 +1,1 @@
-export * from './verity-acount'
+export * from "./verity-acount";
