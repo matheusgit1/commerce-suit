@@ -15,8 +15,8 @@ export const FormWrapper = styled.div`
 `;
 
 export const FormHeader = styled.header`
-  padding-top: 32px;
-  padding-bottom: 32px;
+  padding-top: 25px;
+  padding-bottom: 25px;
 `;
 
 export const FormHeading = styled.h1`
@@ -137,7 +137,7 @@ export const FormButton = styled.button`
   font-size: 14px;
   font-weight: 700;
   color: #fff;
-  background-color: #e0b831;
+  background-color: #afafad;
   border: 0;
   border-radius: 35px;
   box-shadow: 0 10px 10px rgba(0, 0, 0, 0.08);
@@ -165,7 +165,7 @@ export const FormLink = styled.a`
 `;
 
 export const FormFieldLabel = styled.label`
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   font-weight: 600;
   opacity: 0.7;
   color: #000;

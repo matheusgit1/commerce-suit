@@ -103,7 +103,7 @@ export const Header: React.FC<props> = () => {
 
       <Menu style={{ justifyContent: "flex-end" }} mode={"horizontal"}>
 
-        <Menu.Item key="home" icon={<HomeOutlined width={30} />}>
+        <Menu.Item onClick={() => navigate(paths.home)} key="home" icon={<HomeOutlined width={30} />}>
           <Text >Home</Text>
         </Menu.Item>
 
@@ -197,17 +197,15 @@ export const Header: React.FC<props> = () => {
           ) : <Menu.SubMenu key="user" title="USUARIO" icon={<UserOutlined />}>
             <Menu.ItemGroup title="Configurações">
 
-
-
-              <Menu.Item key="1-Configurações" icon={<BellOutlined />}>
+              <Menu.Item onClick={() => navigate(paths.notifications)} key="10-Notificações" icon={<BellOutlined />}>
                 <Text>Notificações</Text>
               </Menu.Item>
 
-              <Menu.Item key="2-Configurações" icon={<MailOutlined />}>
-                <Text>Emails de ofertas</Text>
+              <Menu.Item onClick={() => navigate(paths.questions)} key="questions-1" icon={<QuestionCircleOutlined />}>
+                <Text>Perguntas</Text>
               </Menu.Item>
 
-              <Menu.Item key="3-Configurações" icon={<SettingOutlined />}>
+              <Menu.Item onClick={() => message.warn("Sistem de configurações em desenvolvimento")} key="3-Configurações" icon={<SettingOutlined />}>
                 <Text>Gerais</Text>
               </Menu.Item>
 
