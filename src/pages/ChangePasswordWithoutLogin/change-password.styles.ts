@@ -8,8 +8,7 @@ export const Container = styled.div`
   flex: 1;
   align-items: center;
   justify-content: center;
-  background-image: url(${img});
-  background-color: #e0b831;
+  background-image: linear-gradient(to right, #7E7F7A , #afafad);
   background-size: 100% 100%;
 `
 
