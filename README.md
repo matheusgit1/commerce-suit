@@ -5,7 +5,7 @@
 
 Este projeto tem por principal objetivo o desnvolvimento de um ecommerce completo. com rotas de autenticação, produtos, listsa de compras, carrinhos, lista de desejos e muito mais.
 
-você pode ver um breve video sobre o projeto neste link: #link
+você pode ver um breve video sobre o projeto neste link: https://youtu.be/CjqIgilugRU
 
 
 
@@ -144,7 +144,7 @@ api-produtos - disponivel me https://github.com/matheusgit1/api-produtos
 
 ## Demonstração
 
-Images sobre o proejto, mas vôce pode ver esse video em #link
+Images sobre o proejto, mas vôce pode ver esse video em https://youtu.be/CjqIgilugRU
 
 
 ![img 1](https://github.com/matheusgit1/commerce-suit/blob/master/photos/1-adress.PNG)
