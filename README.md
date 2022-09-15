@@ -141,7 +141,7 @@ api-produtos - disponivel me https://github.com/matheusgit1/api-produtos
 
 ## Demonstração
 
-Images sobre o proejto, mas vôce pode ver esse video em https://youtu.be/CjqIgilugRU
+Images sobre o proejto
 
 
 ![img 1](https://github.com/matheusgit1/commerce-suit/blob/master/photos/1-adress.PNG)
