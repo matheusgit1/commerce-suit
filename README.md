@@ -3,10 +3,7 @@
 
 ## Sobre este projeto
 
-Este projeto tem por principal objetivo o desnvolvimento de um ecommerce completo. com rotas de autenticação, produtos, listsa de compras, carrinhos, lista de desejos e muito mais.
-
-você pode ver um breve video sobre o projeto neste link: https://youtu.be/CjqIgilugRU
-
+Este projeto tem por principal objetivo o desnvolvimento de um ecommerce completo. com rotas de autenticação, produtos, listas de compras, carrinhos, lista de desejos e muito mais.
 
 
 
